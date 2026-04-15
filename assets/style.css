@@ -1,5 +1,6 @@
+
 :root {
-  --primary: #4F46E5;
+  --primary: #4F46E5; /* warna utama */
   --bg: #f9fafb;
   --text: #1f2937;
 }
@@ -37,7 +38,7 @@ body {
 .card {
   background: white;
   border-radius: 1rem;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.15); /* sedikit nuansa primary */
   max-width: 400px;
   width: 100%;
   padding: 2rem;
@@ -53,6 +54,7 @@ button {
   cursor: pointer;
   font-size: 1rem;
   margin-top: 1rem;
+  transition: 0.2s;
 }
 
 button:hover {
