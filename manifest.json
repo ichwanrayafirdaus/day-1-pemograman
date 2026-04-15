@@ -1,8 +1,8 @@
 {
   "id": "./",
-  "name": "PWA Template Responsif",
-  "short_name": "PWA Demo",
-  "description": "Aplikasi PWA responsif untuk demonstrasi template dasar Progressive Web App dengan dukungan offline dan installable.",
+  "name": "Toko Kita - Keuangan Bisnis",
+  "short_name": "Toko Kita",
+  "description": "Aplikasi pengelola keuangan bisnis untuk mencatat pemasukan dan pengeluaran dengan mudah, cepat, dan praktis.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
@@ -36,8 +36,8 @@
   ],
   "shortcuts": [
     {
-      "name": "Buka Beranda",
-      "short_name": "Home",
+      "name": "Buka Toko Kita",
+      "short_name": "Beranda",
       "url": "./index.html",
       "icons": [
         {
@@ -48,7 +48,8 @@
     }
   ],
   "categories": [
-    "productivity",
-    "utilities"
+    "finance",
+    "business",
+    "productivity"
   ]
 }

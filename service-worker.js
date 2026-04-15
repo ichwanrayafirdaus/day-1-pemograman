@@ -1,4 +1,4 @@
-const CACHE_NAME = "pwa-template-v2";
+const CACHE_NAME = "toko-kita-v1";
 const BASE_URL = self.registration.scope;
 
 const urlsToCache = [
@@ -7,13 +7,13 @@ const urlsToCache = [
   `${BASE_URL}offline.html`,
   `${BASE_URL}assets/style.css`,
   `${BASE_URL}manifest.json`,
-  `${BASE_URL}icons/icon-192x192.png`,
-  `${BASE_URL}icons/icon-512x512.png`,
+  `${BASE_URL}icons/icon-192x192-A.png`,
+  `${BASE_URL}icons/icon-512x512-B.png`,
 ];
 
 // Install Service Worker & simpan file ke cache
 self.addEventListener("install", event => {
-  self.skipWaiting(); // langsung aktif tanpa reload manual
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => cache.addAll(urlsToCache))
@@ -34,21 +34,20 @@ self.addEventListener("activate", event => {
           }
         })
       );
-      await self.clients.claim(); // langsung klaim kontrol ke halaman
+      await self.clients.claim();
     })()
   );
 });
 
-// Fetch event: cache-first untuk file lokal, network-first untuk API
+// Fetch event
 self.addEventListener("fetch", event => {
   const request = event.request;
   const url = new URL(request.url);
 
-  // Abaikan permintaan Chrome Extension, analytics, dll.
   if (url.protocol.startsWith("chrome-extension")) return;
   if (request.method !== "GET") return;
 
-  // File lokal (statis)
+  // File lokal
   if (url.origin === self.location.origin) {
     event.respondWith(
       caches.match(request).then(response => {
@@ -59,7 +58,7 @@ self.addEventListener("fetch", event => {
       })
     );
   } 
-  // Resource eksternal (API, CDN, dsb.)
+  // Resource eksternal
   else {
     event.respondWith(
       fetch(request)

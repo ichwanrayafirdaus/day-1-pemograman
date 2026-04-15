@@ -65,4 +65,8 @@ Aplikasi ini dibuat untuk membantu pelaku usaha kecil dalam mengelola keuangan s
 ## ⭐ Dukungan
 Kalau project ini membantu:
 - ⭐ Star repo ini
+<<<<<<< Updated upstream
 - 🍴 Fork project ini
+=======
+- 🍴 Fork project ini
+>>>>>>> Stashed changes
