@@ -1,8 +1,11 @@
-
 :root {
-  --primary: #4F46E5; /* warna utama */
+  --primary: #4F46E5;
+  --secondary: #22c55e;
+  --danger: #ef4444;
   --bg: #f9fafb;
+  --card: #ffffff;
   --text: #1f2937;
+  --gray: #6b7280;
 }
 
 * {
@@ -15,45 +18,61 @@
 body {
   background: var(--bg);
   color: var(--text);
-  display: flex;
-  flex-direction: column;
   min-height: 100vh;
 }
 
+/* HEADER */
 .header {
   background: var(--primary);
   color: white;
-  text-align: center;
   padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
+.header h1 {
+  font-size: 1.8rem;
+}
+
+/* CONTAINER */
 .main {
-  flex: 1;
+  padding: 1.5rem;
   display: flex;
   justify-content: center;
-  align-items: center;
-  padding: 1.5rem;
 }
 
+/* CARD */
 .card {
-  background: white;
+  background: var(--card);
   border-radius: 1rem;
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.15); /* sedikit nuansa primary */
-  max-width: 400px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  padding: 1.5rem;
   width: 100%;
-  padding: 2rem;
+  max-width: 420px;
   text-align: center;
 }
 
+/* INPUT */
+input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  margin-top: 1rem;
+  font-size: 1rem;
+}
+
+/* BUTTON */
 button {
+  width: 100%;
   background: var(--primary);
   border: none;
   color: white;
-  padding: 0.75rem 1.25rem;
+  padding: 0.75rem;
   border-radius: 0.5rem;
+  margin-top: 1rem;
   cursor: pointer;
   font-size: 1rem;
-  margin-top: 1rem;
   transition: 0.2s;
 }
 
@@ -61,21 +80,52 @@ button:hover {
   opacity: 0.9;
 }
 
+/* BUTTON VARIANT */
+.btn-income {
+  background: var(--secondary);
+}
+
+.btn-expense {
+  background: var(--danger);
+}
+
+/* SALDO */
+.balance {
+  margin-top: 1rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--primary);
+}
+
+/* LIST TRANSAKSI */
+.list {
+  margin-top: 1rem;
+  text-align: left;
+}
+
+.list-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.list-item span {
+  font-size: 0.9rem;
+}
+
+/* FOOTER */
 .footer {
   text-align: center;
   padding: 1rem;
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   background: #e5e7eb;
+  margin-top: auto;
 }
 
+/* RESPONSIVE */
 @media (max-width: 600px) {
   .card {
     padding: 1.25rem;
-  }
-  h1 {
-    font-size: 1.5rem;
-  }
-  h2 {
-    font-size: 1.25rem;
   }
 }

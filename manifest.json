@@ -1,27 +1,34 @@
 {
-  "id": "./",
-  "name": "Toko Kita - Keuangan Bisnis",
-  "short_name": "Toko Kita",
-  "description": "Aplikasi pengelola keuangan bisnis untuk mencatat pemasukan dan pengeluaran dengan mudah, cepat, dan praktis.",
+  "name": "Toko Kita",
+  "short_name": "TokoKita",
+  "description": "Aplikasi pengelola keuangan bisnis sederhana",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#4F46E5",
+  "background_color": "#f9fafb",
   "theme_color": "#4F46E5",
   "orientation": "portrait",
   "lang": "id",
+
   "icons": [
     {
-      "src": "icons/icon-192x192-A.png",
+      "src": "icons/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "icons/icon-512x512-B.png",
+      "src": "icons/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
+    },
+    {
+      "src": "icons/maskable_icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
+
   "screenshots": [
     {
       "src": "icons/screenshot1.png",
@@ -34,22 +41,6 @@
       "type": "image/png"
     }
   ],
-  "shortcuts": [
-    {
-      "name": "Buka Toko Kita",
-      "short_name": "Beranda",
-      "url": "./index.html",
-      "icons": [
-        {
-          "src": "icons/icon-192x192-A.png",
-          "sizes": "192x192"
-        }
-      ]
-    }
-  ],
-  "categories": [
-    "finance",
-    "business",
-    "productivity"
-  ]
+
+  "categories": ["business", "finance"]
 }

@@ -7,21 +7,24 @@ const urlsToCache = [
   `${BASE_URL}offline.html`,
   `${BASE_URL}assets/style.css`,
   `${BASE_URL}manifest.json`,
-  `${BASE_URL}icons/icon-192x192-A.png`,
-  `${BASE_URL}icons/icon-512x512-B.png`,
+  `${BASE_URL}icons/icon-192x192.png`,
+  `${BASE_URL}icons/icon-512x512.png`,
+  `${BASE_URL}icons/maskable_icon.png`,
+  `${BASE_URL}icons/logo.png`,
+  `${BASE_URL}icons/favicon.png`
 ];
 
-// Install Service Worker & simpan file ke cache
+// INSTALL
 self.addEventListener("install", event => {
   self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => cache.addAll(urlsToCache))
-      .catch(err => console.error("Cache gagal dimuat:", err))
+      .catch(err => console.log("Cache gagal:", err))
   );
 });
 
-// Aktivasi dan hapus cache lama
+// ACTIVATE
 self.addEventListener("activate", event => {
   event.waitUntil(
     (async () => {
@@ -29,7 +32,6 @@ self.addEventListener("activate", event => {
       await Promise.all(
         keys.map(key => {
           if (key !== CACHE_NAME) {
-            console.log("Menghapus cache lama:", key);
             return caches.delete(key);
           }
         })
@@ -39,15 +41,14 @@ self.addEventListener("activate", event => {
   );
 });
 
-// Fetch event
+// FETCH
 self.addEventListener("fetch", event => {
   const request = event.request;
   const url = new URL(request.url);
 
-  if (url.protocol.startsWith("chrome-extension")) return;
   if (request.method !== "GET") return;
 
-  // File lokal
+  // FILE LOKAL
   if (url.origin === self.location.origin) {
     event.respondWith(
       caches.match(request).then(response => {
@@ -57,15 +58,16 @@ self.addEventListener("fetch", event => {
         );
       })
     );
-  } 
-  // Resource eksternal
+  }
+
+  // FILE EKSTERNAL
   else {
     event.respondWith(
       fetch(request)
-        .then(networkResponse => {
-          const clone = networkResponse.clone();
+        .then(res => {
+          const clone = res.clone();
           caches.open(CACHE_NAME).then(cache => cache.put(request, clone));
-          return networkResponse;
+          return res;
         })
         .catch(() => caches.match(request))
     );

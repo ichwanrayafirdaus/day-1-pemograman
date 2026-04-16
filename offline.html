@@ -2,15 +2,33 @@
 <html lang="id">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Toko Kita - Offline</title>
-    <link rel="stylesheet" href="assets/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Toko Kita - Offline</title>
+
+  <link rel="stylesheet" href="assets/style.css">
 </head>
 
-<body style="text-align:center; padding:2rem;">
-    <h2>⚠️ Toko Kita sedang offline</h2>
-    <p>Koneksi internet terputus. Silakan periksa jaringanmu dan coba lagi.</p>
+<body>
+
+  <div class="main">
+    <div class="card">
+
+      <!-- LOGO -->
+      <div class="logo">
+        <img src="icons/logo.png" alt="Toko Kita" width="120">
+      </div>
+
+      <!-- TEXT -->
+      <h2>⚠️ Kamu sedang offline</h2>
+      <p>Cek koneksi internet kamu lalu coba lagi.</p>
+
+      <!-- BUTTON -->
+      <button onclick="location.reload()">Coba Lagi</button>
+
+    </div>
+  </div>
+
 </body>
 
 </html>
