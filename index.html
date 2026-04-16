@@ -3,7 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Toko Kita App</title>
+
+<title>Toko Kita</title>
+
+<!-- ✅ PWA -->
+<link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#4f46e5">
+<link rel="icon" href="./icons/icon-192x192.png">
 
 <style>
 body{
@@ -24,6 +30,7 @@ body{
   text-align:center;
 }
 
+/* INPUT */
 input{
   width:100%;
   padding:10px;
@@ -40,7 +47,7 @@ input{
 /* MENU */
 .menu{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
+  grid-template-columns:repeat(3,1fr);
   gap:10px;
   padding:15px;
 }
@@ -73,6 +80,13 @@ button{
   background:#4f46e5;
   color:white;
 }
+
+/* LIST */
+.item{
+  display:flex;
+  justify-content:space-between;
+  margin-top:10px;
+}
 </style>
 </head>
 
@@ -80,7 +94,7 @@ button{
 
 <!-- LOGIN -->
 <div id="loginPage" class="login">
-  <h2>Login</h2>
+  <h2>Login Toko Kita</h2>
   <input id="username" placeholder="Nama Toko">
   <input id="email" placeholder="Email">
   <button onclick="login()">Masuk</button>
@@ -94,20 +108,26 @@ button{
   </div>
 
   <div class="menu">
-    <div class="menu-item" onclick="showPage('transaksi')">💰</div>
-    <div class="menu-item" onclick="showPage('utang')">📒</div>
-    <div class="menu-item" onclick="showPage('laporan')">📊</div>
+    <div class="menu-item" onclick="showPage('transaksi')">💰 Transaksi</div>
+    <div class="menu-item" onclick="showPage('utang')">📒 Utang</div>
+    <div class="menu-item" onclick="showPage('laporan')">📊 Laporan</div>
   </div>
 
   <div id="content"></div>
 </div>
 
 <script>
-let data=[];
-let utang=[];
+let data = JSON.parse(localStorage.getItem("data")) || [];
+let utang = JSON.parse(localStorage.getItem("utang")) || [];
 
+// LOGIN
 function login(){
-  localStorage.setItem("user",username.value);
+  const user = document.getElementById("username").value;
+  const email = document.getElementById("email").value;
+
+  if(!user || !email) return alert("Isi semua!");
+
+  localStorage.setItem("user", user);
   loadApp();
 }
 
@@ -117,67 +137,125 @@ function logout(){
 }
 
 function loadApp(){
-  if(localStorage.getItem("user")){
-    loginPage.style.display="none";
-    app.style.display="block";
-    welcome.innerText="Halo, "+localStorage.getItem("user");
+  const user = localStorage.getItem("user");
+
+  if(user){
+    document.getElementById("loginPage").style.display="none";
+    document.getElementById("app").style.display="block";
+    document.getElementById("welcome").innerText="Halo, "+user;
     showPage("transaksi");
   }
 }
 
+// NAV
 function showPage(p){
+const content = document.getElementById("content");
+
+// TRANSAKSI
 if(p==="transaksi"){
 content.innerHTML=`
 <div class="card">
-<input id="amount" type="number">
+<h3>Tambah Transaksi</h3>
+<input id="amount" type="number" placeholder="Jumlah">
 <button onclick="add()">Tambah</button>
 </div>
-<div class="card" id="list"></div>
+
+<div class="card">
+<h3>Data</h3>
+<div id="list"></div>
+</div>
 `;
 render();
 }
 
+// UTANG
 if(p==="utang"){
 content.innerHTML=`
 <div class="card">
-<input id="nama">
-<input id="jumlah" type="number">
+<h3>Catat Utang</h3>
+<input id="nama" placeholder="Nama">
+<input id="jumlah" type="number" placeholder="Jumlah">
 <button onclick="addUtang()">Tambah</button>
 </div>
-<div class="card" id="utangList"></div>
+
+<div class="card">
+<div id="utangList"></div>
+</div>
 `;
 renderUtang();
 }
 
+// LAPORAN
 if(p==="laporan"){
-content.innerHTML=`<div class="card">Total: ${data.length}</div>`;
+let total = data.reduce((a,b)=>a+b,0);
+
+content.innerHTML=`
+<div class="card">
+<h3>Laporan</h3>
+<p>Total Uang: Rp ${total}</p>
+<p>Jumlah Transaksi: ${data.length}</p>
+<p>Total Utang: Rp ${utang.reduce((a,b)=>a+b.jumlah,0)}</p>
+</div>
+`;
 }
 }
 
+// DATA
 function add(){
-data.push(parseInt(amount.value));
+const amount = parseInt(document.getElementById("amount").value);
+if(!amount) return;
+
+data.push(amount);
+localStorage.setItem("data", JSON.stringify(data));
 render();
 }
 
 function render(){
+const list = document.getElementById("list");
+if(!list) return;
+
 list.innerHTML="";
-data.forEach(d=>{
-list.innerHTML+=`<div>Rp ${d}</div>`;
+
+data.forEach((d,i)=>{
+list.innerHTML += `
+<div class="item">
+  Rp ${d}
+  <button onclick="hapus(${i})">❌</button>
+</div>
+`;
 });
 }
 
+function hapus(i){
+data.splice(i,1);
+localStorage.setItem("data", JSON.stringify(data));
+render();
+}
+
+// UTANG
 function addUtang(){
-utang.push({n:nama.value,j:jumlah.value});
+const nama = document.getElementById("nama").value;
+const jumlah = parseInt(document.getElementById("jumlah").value);
+
+if(!nama || !jumlah) return;
+
+utang.push({nama, jumlah});
+localStorage.setItem("utang", JSON.stringify(utang));
 renderUtang();
 }
 
 function renderUtang(){
-utangList.innerHTML="";
+const el = document.getElementById("utangList");
+if(!el) return;
+
+el.innerHTML="";
+
 utang.forEach(u=>{
-utangList.innerHTML+=`<div>${u.n} - ${u.j}</div>`;
+el.innerHTML += `<div class="item">${u.nama} - Rp ${u.jumlah}</div>`;
 });
 }
 
+// INIT
 loadApp();
 </script>
 

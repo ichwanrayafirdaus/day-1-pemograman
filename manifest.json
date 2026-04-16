@@ -1,46 +1,36 @@
 {
+  "id": "./",
   "name": "Toko Kita",
   "short_name": "TokoKita",
-  "description": "Aplikasi pengelola keuangan bisnis sederhana",
+  "description": "Aplikasi keuangan sederhana untuk transaksi dan utang",
+
   "start_url": "./index.html",
   "scope": "./",
+
   "display": "standalone",
-  "background_color": "#f9fafb",
-  "theme_color": "#4F46E5",
   "orientation": "portrait",
+
+  "background_color": "#4f46e5",
+  "theme_color": "#4f46e5",
+
   "lang": "id",
 
   "icons": [
     {
-      "src": "icons/icon-192x192.png",
+      "src": "./icons/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "icons/icon-512x512.png",
+      "src": "./icons/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
     },
     {
-      "src": "icons/maskable_icon.png",
+      "src": "./icons/maskable_icon.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
     }
-  ],
-
-  "screenshots": [
-    {
-      "src": "icons/screenshot1.png",
-      "sizes": "1080x1920",
-      "type": "image/png"
-    },
-    {
-      "src": "icons/screenshot2.png",
-      "sizes": "1080x1920",
-      "type": "image/png"
-    }
-  ],
-
-  "categories": ["business", "finance"]
+  ]
 }

@@ -3,81 +3,260 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Toko Kita</title>
+
+<!-- ✅ PWA -->
+<link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#4f46e5">
+<link rel="icon" href="./icons/icon-192x192.png">
 
 <style>
 body{
   margin:0;
   font-family:sans-serif;
-  background:#f1f5f9;
-}
-
-/* HERO */
-.hero{
-  background:linear-gradient(135deg,#1d4ed8,#2563eb);
+  background:linear-gradient(135deg,#4f46e5,#9333ea);
   color:white;
-  padding:30px 20px 60px;
-  border-bottom-left-radius:25px;
-  border-bottom-right-radius:25px;
 }
 
-.big{
-  font-size:30px;
-  font-weight:bold;
+/* LOGIN */
+.login{
+  max-width:350px;
+  margin:100px auto;
+  background:white;
+  color:black;
+  padding:20px;
+  border-radius:15px;
+  text-align:center;
+}
+
+/* INPUT */
+input{
+  width:100%;
+  padding:10px;
   margin-top:10px;
+  border-radius:10px;
+  border:1px solid #ccc;
+}
+
+/* HEADER */
+.header{
+  padding:20px;
 }
 
 /* MENU */
 .menu{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
+  grid-template-columns:repeat(3,1fr);
   gap:10px;
   padding:15px;
 }
 
 .menu-item{
   background:white;
+  color:black;
   border-radius:12px;
   padding:10px;
   text-align:center;
+  cursor:pointer;
+}
+
+/* CARD */
+.card{
+  background:white;
+  color:black;
+  margin:15px;
+  padding:15px;
+  border-radius:15px;
 }
 
 /* BUTTON */
-.btn{
-  margin:15px;
-  padding:12px;
-  width:90%;
+button{
+  width:100%;
+  padding:10px;
+  margin-top:10px;
   border:none;
   border-radius:10px;
-  background:#2563eb;
+  background:#4f46e5;
   color:white;
-  font-size:16px;
+}
+
+/* LIST */
+.item{
+  display:flex;
+  justify-content:space-between;
+  margin-top:10px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="hero">
-  <h1>Usaha Makin Lancar</h1>
-  <div class="big">Kelola dengan Toko Kita</div>
+<!-- LOGIN -->
+<div id="loginPage" class="login">
+  <h2>Login Toko Kita</h2>
+  <input id="username" placeholder="Nama Toko">
+  <input id="email" placeholder="Email">
+  <button onclick="login()">Masuk</button>
 </div>
 
-<div class="menu">
-  <div class="menu-item">📒<br>Utang</div>
-  <div class="menu-item">💰<br>Transaksi</div>
-  <div class="menu-item">📦<br>Stok</div>
-  <div class="menu-item">📊<br>Laporan</div>
-</div>
+<!-- APP -->
+<div id="app" style="display:none;">
+  <div class="header">
+    <h2 id="welcome"></h2>
+    <button onclick="logout()">Logout</button>
+  </div>
 
-<button class="btn" onclick="goApp()">
-  YUK MENGATUR KEUANGANMU
-</button>
+  <div class="menu">
+    <div class="menu-item" onclick="showPage('transaksi')">💰 Transaksi</div>
+    <div class="menu-item" onclick="showPage('utang')">📒 Utang</div>
+    <div class="menu-item" onclick="showPage('laporan')">📊 Laporan</div>
+  </div>
+
+  <div id="content"></div>
+</div>
 
 <script>
-function goApp(){
-  window.location.href="index.html";
+let data = JSON.parse(localStorage.getItem("data")) || [];
+let utang = JSON.parse(localStorage.getItem("utang")) || [];
+
+// LOGIN
+function login(){
+  const user = document.getElementById("username").value;
+  const email = document.getElementById("email").value;
+
+  if(!user || !email) return alert("Isi semua!");
+
+  localStorage.setItem("user", user);
+  loadApp();
 }
+
+function logout(){
+  localStorage.clear();
+  location.reload();
+}
+
+function loadApp(){
+  const user = localStorage.getItem("user");
+
+  if(user){
+    document.getElementById("loginPage").style.display="none";
+    document.getElementById("app").style.display="block";
+    document.getElementById("welcome").innerText="Halo, "+user;
+    showPage("transaksi");
+  }
+}
+
+// NAV
+function showPage(p){
+const content = document.getElementById("content");
+
+// TRANSAKSI
+if(p==="transaksi"){
+content.innerHTML=`
+<div class="card">
+<h3>Tambah Transaksi</h3>
+<input id="amount" type="number" placeholder="Jumlah">
+<button onclick="add()">Tambah</button>
+</div>
+
+<div class="card">
+<h3>Data</h3>
+<div id="list"></div>
+</div>
+`;
+render();
+}
+
+// UTANG
+if(p==="utang"){
+content.innerHTML=`
+<div class="card">
+<h3>Catat Utang</h3>
+<input id="nama" placeholder="Nama">
+<input id="jumlah" type="number" placeholder="Jumlah">
+<button onclick="addUtang()">Tambah</button>
+</div>
+
+<div class="card">
+<div id="utangList"></div>
+</div>
+`;
+renderUtang();
+}
+
+// LAPORAN
+if(p==="laporan"){
+let total = data.reduce((a,b)=>a+b,0);
+
+content.innerHTML=`
+<div class="card">
+<h3>Laporan</h3>
+<p>Total Uang: Rp ${total}</p>
+<p>Jumlah Transaksi: ${data.length}</p>
+<p>Total Utang: Rp ${utang.reduce((a,b)=>a+b.jumlah,0)}</p>
+</div>
+`;
+}
+}
+
+// DATA
+function add(){
+const amount = parseInt(document.getElementById("amount").value);
+if(!amount) return;
+
+data.push(amount);
+localStorage.setItem("data", JSON.stringify(data));
+render();
+}
+
+function render(){
+const list = document.getElementById("list");
+if(!list) return;
+
+list.innerHTML="";
+
+data.forEach((d,i)=>{
+list.innerHTML += `
+<div class="item">
+  Rp ${d}
+  <button onclick="hapus(${i})">❌</button>
+</div>
+`;
+});
+}
+
+function hapus(i){
+data.splice(i,1);
+localStorage.setItem("data", JSON.stringify(data));
+render();
+}
+
+// UTANG
+function addUtang(){
+const nama = document.getElementById("nama").value;
+const jumlah = parseInt(document.getElementById("jumlah").value);
+
+if(!nama || !jumlah) return;
+
+utang.push({nama, jumlah});
+localStorage.setItem("utang", JSON.stringify(utang));
+renderUtang();
+}
+
+function renderUtang(){
+const el = document.getElementById("utangList");
+if(!el) return;
+
+el.innerHTML="";
+
+utang.forEach(u=>{
+el.innerHTML += `<div class="item">${u.nama} - Rp ${u.jumlah}</div>`;
+});
+}
+
+// INIT
+loadApp();
 </script>
 
 </body>
