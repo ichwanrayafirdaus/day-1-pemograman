@@ -1,111 +1,84 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Toko Kita</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toko Kita</title>
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="assets/style.css">
+<style>
+body{
+  margin:0;
+  font-family:sans-serif;
+  background:#f1f5f9;
+}
 
-  <!-- Favicon -->
-  <link rel="icon" href="icons/favicon.png">
+/* HERO */
+.hero{
+  background:linear-gradient(135deg,#1d4ed8,#2563eb);
+  color:white;
+  padding:30px 20px 60px;
+  border-bottom-left-radius:25px;
+  border-bottom-right-radius:25px;
+}
 
+.big{
+  font-size:30px;
+  font-weight:bold;
+  margin-top:10px;
+}
+
+/* MENU */
+.menu{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+  padding:15px;
+}
+
+.menu-item{
+  background:white;
+  border-radius:12px;
+  padding:10px;
+  text-align:center;
+}
+
+/* BUTTON */
+.btn{
+  margin:15px;
+  padding:12px;
+  width:90%;
+  border:none;
+  border-radius:10px;
+  background:#2563eb;
+  color:white;
+  font-size:16px;
+}
+</style>
 </head>
 
 <body>
 
-  <!-- HEADER -->
-  <header class="header">
-    <div class="logo">
-      <img src="icons/logo.png" alt="Toko Kita" width="140">
-    </div>
-    <p>Aplikasi pengelola keuangan bisnis</p>
-  </header>
+<div class="hero">
+  <h1>Usaha Makin Lancar</h1>
+  <div class="big">Kelola dengan Toko Kita</div>
+</div>
 
-  <!-- MAIN -->
-  <main class="main">
-    <div class="card">
+<div class="menu">
+  <div class="menu-item">📒<br>Utang</div>
+  <div class="menu-item">💰<br>Transaksi</div>
+  <div class="menu-item">📦<br>Stok</div>
+  <div class="menu-item">📊<br>Laporan</div>
+</div>
 
-      <h2>Tambah Transaksi</h2>
+<button class="btn" onclick="goApp()">
+  YUK MENGATUR KEUANGANMU
+</button>
 
-      <!-- INPUT JENIS -->
-      <select id="type">
-        <option value="income">Pemasukan</option>
-        <option value="expense">Pengeluaran</option>
-      </select>
-
-      <!-- INPUT JUMLAH -->
-      <input type="number" id="amount" placeholder="Masukkan jumlah">
-
-      <!-- BUTTON -->
-      <button onclick="addTransaction()">Simpan</button>
-
-      <!-- SALDO -->
-      <div class="balance" id="balance">
-        Rp 0
-      </div>
-
-      <!-- LIST -->
-      <div class="list" id="list"></div>
-
-    </div>
-  </main>
-
-  <!-- FOOTER -->
-  <footer class="footer">
-    <p>© 2026 Toko Kita</p>
-  </footer>
-
-  <!-- SCRIPT -->
-  <script>
-    let transactions = JSON.parse(localStorage.getItem("data")) || [];
-
-    function updateUI() {
-      const list = document.getElementById("list");
-      const balance = document.getElementById("balance");
-
-      list.innerHTML = "";
-
-      let total = 0;
-
-      transactions.forEach(item => {
-        const div = document.createElement("div");
-        div.classList.add("list-item");
-
-        const sign = item.type === "income" ? "+" : "-";
-        if (item.type === "income") {
-          total += item.amount;
-        } else {
-          total -= item.amount;
-        }
-
-        div.innerHTML = `
-          <span>${item.type === "income" ? "Pemasukan" : "Pengeluaran"}</span>
-          <span>${sign} Rp ${item.amount}</span>
-        `;
-
-        list.appendChild(div);
-      });
-
-      balance.innerText = "Rp " + total;
-      localStorage.setItem("data", JSON.stringify(transactions));
-    }
-
-    function addTransaction() {
-      const type = document.getElementById("type").value;
-      const amount = parseInt(document.getElementById("amount").value);
-
-      if (!amount) return alert("Isi jumlah dulu!");
-
-      transactions.push({ type, amount });
-      document.getElementById("amount").value = "";
-
-      updateUI();
-    }
-
-    updateUI();
-  </script>
+<script>
+function goApp(){
+  window.location.href="index.html";
+}
+</script>
 
 </body>
 </html>

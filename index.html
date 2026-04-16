@@ -1,124 +1,185 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toko Kita App</title>
 
-  <title>Toko Kita</title>
+<style>
+body{
+  margin:0;
+  font-family:sans-serif;
+  background:linear-gradient(135deg,#4f46e5,#9333ea);
+  color:white;
+}
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="assets/style.css">
+/* LOGIN */
+.login{
+  max-width:350px;
+  margin:100px auto;
+  background:white;
+  color:black;
+  padding:20px;
+  border-radius:15px;
+  text-align:center;
+}
 
-  <!-- PWA -->
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#4F46E5">
+input{
+  width:100%;
+  padding:10px;
+  margin-top:10px;
+  border-radius:10px;
+  border:1px solid #ccc;
+}
 
-  <!-- ICON -->
-  <link rel="icon" href="icons/favicon.png">
+/* HEADER */
+.header{
+  padding:20px;
+}
 
+/* MENU */
+.menu{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+  padding:15px;
+}
+
+.menu-item{
+  background:white;
+  color:black;
+  border-radius:12px;
+  padding:10px;
+  text-align:center;
+  cursor:pointer;
+}
+
+/* CARD */
+.card{
+  background:white;
+  color:black;
+  margin:15px;
+  padding:15px;
+  border-radius:15px;
+}
+
+/* BUTTON */
+button{
+  width:100%;
+  padding:10px;
+  margin-top:10px;
+  border:none;
+  border-radius:10px;
+  background:#4f46e5;
+  color:white;
+}
+</style>
 </head>
 
 <body>
 
-  <!-- HEADER -->
-  <header class="header">
-    <div class="logo">
-      <img src="icons/logo.png" alt="Toko Kita" width="140">
-    </div>
-    <p>Aplikasi pengelola keuangan bisnis</p>
-  </header>
+<!-- LOGIN -->
+<div id="loginPage" class="login">
+  <h2>Login</h2>
+  <input id="username" placeholder="Nama Toko">
+  <input id="email" placeholder="Email">
+  <button onclick="login()">Masuk</button>
+</div>
 
-  <!-- MAIN -->
-  <main class="main">
-    <div class="card">
+<!-- APP -->
+<div id="app" style="display:none;">
+  <div class="header">
+    <h2 id="welcome"></h2>
+    <button onclick="logout()">Logout</button>
+  </div>
 
-      <h2>Tambah Transaksi</h2>
+  <div class="menu">
+    <div class="menu-item" onclick="showPage('transaksi')">💰</div>
+    <div class="menu-item" onclick="showPage('utang')">📒</div>
+    <div class="menu-item" onclick="showPage('laporan')">📊</div>
+  </div>
 
-      <!-- JENIS -->
-      <select id="type">
-        <option value="income">Pemasukan</option>
-        <option value="expense">Pengeluaran</option>
-      </select>
+  <div id="content"></div>
+</div>
 
-      <!-- JUMLAH -->
-      <input type="number" id="amount" placeholder="Masukkan jumlah">
+<script>
+let data=[];
+let utang=[];
 
-      <!-- BUTTON -->
-      <button onclick="addTransaction()">Simpan</button>
+function login(){
+  localStorage.setItem("user",username.value);
+  loadApp();
+}
 
-      <!-- SALDO -->
-      <div class="balance" id="balance">
-        Rp 0
-      </div>
+function logout(){
+  localStorage.clear();
+  location.reload();
+}
 
-      <!-- LIST -->
-      <div class="list" id="list"></div>
+function loadApp(){
+  if(localStorage.getItem("user")){
+    loginPage.style.display="none";
+    app.style.display="block";
+    welcome.innerText="Halo, "+localStorage.getItem("user");
+    showPage("transaksi");
+  }
+}
 
-    </div>
-  </main>
+function showPage(p){
+if(p==="transaksi"){
+content.innerHTML=`
+<div class="card">
+<input id="amount" type="number">
+<button onclick="add()">Tambah</button>
+</div>
+<div class="card" id="list"></div>
+`;
+render();
+}
 
-  <!-- FOOTER -->
-  <footer class="footer">
-    <p>© 2026 Toko Kita</p>
-  </footer>
+if(p==="utang"){
+content.innerHTML=`
+<div class="card">
+<input id="nama">
+<input id="jumlah" type="number">
+<button onclick="addUtang()">Tambah</button>
+</div>
+<div class="card" id="utangList"></div>
+`;
+renderUtang();
+}
 
-  <!-- SCRIPT -->
-  <script>
-    let transactions = JSON.parse(localStorage.getItem("data")) || [];
+if(p==="laporan"){
+content.innerHTML=`<div class="card">Total: ${data.length}</div>`;
+}
+}
 
-    function updateUI() {
-      const list = document.getElementById("list");
-      const balance = document.getElementById("balance");
+function add(){
+data.push(parseInt(amount.value));
+render();
+}
 
-      list.innerHTML = "";
-      let total = 0;
+function render(){
+list.innerHTML="";
+data.forEach(d=>{
+list.innerHTML+=`<div>Rp ${d}</div>`;
+});
+}
 
-      transactions.forEach(item => {
-        const div = document.createElement("div");
-        div.classList.add("list-item");
+function addUtang(){
+utang.push({n:nama.value,j:jumlah.value});
+renderUtang();
+}
 
-        const sign = item.type === "income" ? "+" : "-";
+function renderUtang(){
+utangList.innerHTML="";
+utang.forEach(u=>{
+utangList.innerHTML+=`<div>${u.n} - ${u.j}</div>`;
+});
+}
 
-        if (item.type === "income") {
-          total += item.amount;
-        } else {
-          total -= item.amount;
-        }
-
-        div.innerHTML = `
-          <span>${item.type === "income" ? "Pemasukan" : "Pengeluaran"}</span>
-          <span>${sign} Rp ${item.amount}</span>
-        `;
-
-        list.appendChild(div);
-      });
-
-      balance.innerText = "Rp " + total;
-      localStorage.setItem("data", JSON.stringify(transactions));
-    }
-
-    function addTransaction() {
-      const type = document.getElementById("type").value;
-      const amount = parseInt(document.getElementById("amount").value);
-
-      if (!amount) return alert("Isi jumlah dulu!");
-
-      transactions.push({ type, amount });
-      document.getElementById("amount").value = "";
-
-      updateUI();
-    }
-
-    updateUI();
-
-    // SERVICE WORKER
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./service-worker.js')
-        .then(() => console.log('SW aktif'))
-        .catch(err => console.log(err));
-    }
-  </script>
+loadApp();
+</script>
 
 </body>
 </html>
