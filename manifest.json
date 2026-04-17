@@ -1,36 +1,21 @@
 {
-  "id": "./",
-  "name": "Toko Kita",
-  "short_name": "TokoKita",
-  "description": "Aplikasi keuangan sederhana untuk transaksi dan utang",
-
+  "name": "TOKO KITA",
+  "short_name": "TOKO KITA",
+  "description": "Aplikasi Manajemen Keuangan UMKM",
   "start_url": "./index.html",
-  "scope": "./",
-
   "display": "standalone",
-  "orientation": "portrait",
-
-  "background_color": "#4f46e5",
-  "theme_color": "#4f46e5",
-
-  "lang": "id",
-
+  "background_color": "#ffffff",
+  "theme_color": "#1565C0",
   "icons": [
     {
-      "src": "./icons/icon-192x192.png",
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' fill='%231565C0' rx='32'/%3E%3Ctext x='96' y='130' text-anchor='middle' font-size='100' fill='white'%3E%F0%9F%8F%AA%3C/text%3E%3C/svg%3E",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/svg+xml"
     },
     {
-      "src": "./icons/icon-512x512.png",
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%231565C0' rx='80'/%3E%3Ctext x='256' y='350' text-anchor='middle' font-size='280' fill='white'%3E%F0%9F%8F%AA%3C/text%3E%3C/svg%3E",
       "sizes": "512x512",
-      "type": "image/png"
-    },
-    {
-      "src": "./icons/maskable_icon.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
+      "type": "image/svg+xml"
     }
   ]
 }
