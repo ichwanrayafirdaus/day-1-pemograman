@@ -1,21 +1,54 @@
 {
-  "name": "TOKO KITA",
-  "short_name": "TOKO KITA",
-  "description": "Aplikasi Manajemen Keuangan UMKM",
+  "id": "./",
+  "name": "PWA Template Responsif",
+  "short_name": "PWA Demo",
+  "description": "Aplikasi PWA responsif untuk demonstrasi template dasar Progressive Web App dengan dukungan offline dan installable.",
   "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#1565C0",
+  "background_color": "#4F46E5",
+  "theme_color": "#4F46E5",
+  "orientation": "portrait",
+  "lang": "id",
   "icons": [
     {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' fill='%231565C0' rx='32'/%3E%3Ctext x='96' y='130' text-anchor='middle' font-size='100' fill='white'%3E%F0%9F%8F%AA%3C/text%3E%3C/svg%3E",
+      "src": "icons/icon-192x192-A.png",
       "sizes": "192x192",
-      "type": "image/svg+xml"
+      "type": "image/png"
     },
     {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%231565C0' rx='80'/%3E%3Ctext x='256' y='350' text-anchor='middle' font-size='280' fill='white'%3E%F0%9F%8F%AA%3C/text%3E%3C/svg%3E",
+      "src": "icons/icon-512x512-B.png",
       "sizes": "512x512",
-      "type": "image/svg+xml"
+      "type": "image/png"
     }
+  ],
+  "screenshots": [
+    {
+      "src": "icons/screenshot1.png",
+      "sizes": "1080x1920",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/screenshot2.png",
+      "sizes": "1080x1920",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Buka Beranda",
+      "short_name": "Home",
+      "url": "./index.html",
+      "icons": [
+        {
+          "src": "icons/icon-192x192-A.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
+  "categories": [
+    "productivity",
+    "utilities"
   ]
 }
