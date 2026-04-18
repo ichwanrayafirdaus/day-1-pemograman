@@ -1,592 +1,593 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#6366f1" />
-    <link rel="icon" href="icons/icon-192x192-A.png" type="image/png" /> 
-    <!-- halo jokowi -->
-    <link rel="manifest" href="manifest.json">
-    <title>TaskFlow - Kelola Tugas Anda</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --primary-light: #818cf8;
-            --bg-dark: #ffffff;
-            --bg-card: #1e293b;
-            --text-light: #f8fafc;
-            --text-gray: #cbd5e1;
-            --success: #22c55e;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-        }
+<!-- ===== SEO & PWA META ===== -->
+<meta name="description" content="TOKO KITA — Aplikasi Manajemen Keuangan UMKM. Catat pemasukan, pengeluaran, dan utang pelanggan.">
+<meta name="theme-color" content="#1565C0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="TOKO KITA">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="TOKO KITA">
+<meta name="msapplication-TileColor" content="#1565C0">
+<meta name="msapplication-TileImage" content="./icons/icon-144.png">
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, var(--bg-dark) 0%, #1856bb 100%);
-            color: var(--text-light);
-            min-height: 100vh;
-            padding-bottom: 80px;
-        }
+<!-- ===== TITLE ===== -->
+<title>TOKO KITA — Manajemen Keuangan UMKM</title>
 
-        .header {
-            background: #1856bb;
-            backdrop-filter: blur(10px);
-            padding: 20px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid rgba(99, 102, 241, 0.2);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-        }
+<!-- ===== PWA MANIFEST ===== -->
+<link rel="manifest" href="./manifest.json">
 
-        .header-content {
-            max-width: 800px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+<!-- ===== APPLE TOUCH ICONS ===== -->
+<link rel="apple-touch-icon" href="./icons/icon-152.png">
+<link rel="apple-touch-icon" sizes="192x192" href="./icons/icon-192.png">
 
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+<!-- ===== FAVICON ===== -->
+<link rel="icon" type="image/png" sizes="32x32" href="./icons/icon-96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="./icons/icon-72.png">
 
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
-        }
+<!-- ===== FONTS ===== -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-        h1 {
-            font-size: 24px;
-            font-weight: 700;
-        }
+<!-- ===== BOOTSTRAP 5 CSS ===== -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-        .stats {
-            display: flex;
-            gap: 16px;
-            font-size: 14px;
-            color: var(--text-gray);
-        }
+<!-- ===== BOOTSTRAP ICONS ===== -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
-        .stat-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .stat-number {
-            color: var(--primary-light);
-            font-weight: 700;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 24px 20px;
-        }
-
-        .input-section {
-            background: var(--bg-card);
-            padding: 24px;
-            border-radius: 16px;
-            margin-bottom: 24px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(99, 102, 241, 0.1);
-        }
-
-        .input-group {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-
-        input[type="text"] {
-            flex: 1;
-            padding: 14px 18px;
-            background: var(--bg-dark);
-            border: 2px solid rgba(99, 102, 241, 0.3);
-            border-radius: 12px;
-            color: var(--text-light);
-            font-size: 16px;
-            transition: all 0.3s ease;
-        }
-
-        input[type="text"]:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
-        }
-
-        .btn {
-            padding: 14px 28px;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            color: white;
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
-        }
-
-        .btn-primary:active {
-            transform: translateY(0);
-        }
-
-        .priority-selector {
-            display: flex;
-            gap: 8px;
-        }
-
-        .priority-btn {
-            flex: 1;
-            padding: 10px;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            background: transparent;
-            color: var(--text-gray);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 14px;
-        }
-
-        .priority-btn.active {
-            border-color: currentColor;
-            background: rgba(255, 255, 255, 0.1);
-            font-weight: 600;
-        }
-
-        .priority-btn.high {
-            color: var(--danger);
-        }
-
-        .priority-btn.medium {
-            color: var(--warning);
-        }
-
-        .priority-btn.low {
-            color: var(--success);
-        }
-
-        .filter-tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 20px;
-            overflow-x: auto;
-            padding-bottom: 4px;
-        }
-
-        .filter-tab {
-            padding: 10px 20px;
-            background: var(--bg-card);
-            border: 2px solid transparent;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-            font-size: 14px;
-            font-weight: 500;
-            color: #ffffff;
-        }
-
-        .filter-tab.active {
-            background: var(--primary);
-            border-color: var(--primary-light);
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
-        }
-
-        .tasks-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .task-item {
-            background: var(--bg-card);
-            padding: 20px;
-            border-radius: 12px;
-            border-left: 4px solid;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            transition: all 0.3s ease;
-            animation: slideIn 0.3s ease;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .task-item:hover {
-            transform: translateX(4px);
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-        }
-
-        .task-item.high {
-            border-left-color: var(--danger);
-        }
-
-        .task-item.medium {
-            border-left-color: var(--warning);
-        }
-
-        .task-item.low {
-            border-left-color: var(--success);
-        }
-
-        .task-checkbox {
-            width: 24px;
-            height: 24px;
-            border: 2px solid var(--primary);
-            border-radius: 6px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            transition: all 0.3s ease;
-        }
-
-        .task-checkbox:hover {
-            background: rgba(99, 102, 241, 0.1);
-        }
-
-        .task-checkbox.checked {
-            background: var(--primary);
-        }
-
-        .task-content {
-            flex: 1;
-        }
-
-        .task-text {
-            font-size: 16px;
-            margin-bottom: 4px;
-        }
-
-        .task-text.completed {
-            text-decoration: line-through;
-            opacity: 0.6;
-        }
-
-        .task-meta {
-            display: flex;
-            gap: 12px;
-            font-size: 12px;
-            color: var(--text-gray);
-        }
-
-        .task-time {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .task-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .btn-icon {
-            width: 36px;
-            height: 36px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            font-size: 18px;
-        }
-
-        .btn-delete {
-            background: rgba(239, 68, 68, 0.1);
-            color: var(--danger);
-        }
-
-        .btn-delete:hover {
-            background: var(--danger);
-            color: white;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: var(--text-gray);
-        }
-
-        .empty-icon {
-            font-size: 64px;
-            margin-bottom: 16px;
-            opacity: 0.5;
-        }
-
-        .progress-bar {
-            background: var(--bg-card);
-            height: 8px;
-            border-radius: 4px;
-            overflow: hidden;
-            margin: 16px 0;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--primary-light));
-            transition: width 0.5s ease;
-            border-radius: 4px;
-        }
-
-        @media (max-width: 640px) {
-            .header-content {
-                flex-direction: column;
-                gap: 12px;
-            }
-
-            .input-group {
-                flex-direction: column;
-            }
-
-            .stats {
-                width: 100%;
-                justify-content: space-around;
-            }
-        }
-
-        .logo h1 {
-            font-size: 50px;
-            font-weight: 800;
-        }
-    </style>
+<!-- ===== CUSTOM CSS ===== -->
+<link rel="stylesheet" href="./style.css">
 </head>
-
 <body>
-    <header class="header">
-        <div class="header-content">
-            <div class="logo">
-                <div class="logo-icon">✓</div>
-                <h1 class="text-judul">TaskFlow</h1>
-            </div>
-            <div class="stats">
-                <div class="stat-item">
-                    <span>📝</span>
-                    <span>Total: <span class="stat-number" id="totalTasks">0</span></span>
-                </div>
-                <div class="stat-item">
-                    <span>✅</span>
-                    <span>Selesai: <span class="stat-number" id="completedTasks">0</span></span>
-                </div>
-            </div>
-        </div>
-    </header>
 
-    <div class="container">
-        <div class="input-section">
-            <div class="input-group">
-                <input type="text" id="taskInput" placeholder="Tambahkan tugas baru..."
-                    onkeypress="if(event.key==='Enter') addTask()" />
-                <button class="btn btn-primary" onclick="addTask()">
-                    <span>➕</span>
-                    <span>Tambah</span>
-                </button>
-            </div>
-            <div class="priority-selector">
-                <button class="priority-btn high" onclick="setPriority('high')">🔴 Tinggi</button>
-                <button class="priority-btn medium active" onclick="setPriority('medium')">🟡 Sedang</button>
-                <button class="priority-btn low" onclick="setPriority('low')">🟢 Rendah</button>
-            </div>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressBar" style="width: 0%"></div>
-            </div>
-        </div>
+<!-- ============================================================
+     LOADING OVERLAY
+     ============================================================ -->
+<div id="loading-overlay">
+  <div class="loading-spinner">
+    <div class="spinner-ring"></div>
+    <p>Memuat TOKO KITA...</p>
+  </div>
+</div>
 
-        <div class="filter-tabs">
-            <button class="filter-tab active" onclick="filterTasks('all')">Semua</button>
-            <button class="filter-tab" onclick="filterTasks('active')">Aktif</button>
-            <button class="filter-tab" onclick="filterTasks('completed')">Selesai</button>
-            <button class="filter-tab" onclick="filterTasks('high')">🔴 Prioritas Tinggi</button>
-            <button class="filter-tab" onclick="filterTasks('medium')">🟡 Prioritas Sedang</button>
-            <button class="filter-tab" onclick="filterTasks('low')">🟢 Prioritas Rendah</button>
-        </div>
+<!-- ============================================================
+     TOAST CONTAINER
+     ============================================================ -->
+<div id="toast-container"></div>
 
-        <div class="tasks-list" id="tasksList"></div>
+<!-- ============================================================
+     AUTH SCREEN — LOGIN & REGISTER
+     ============================================================ -->
+<div id="auth-screen">
+  <div class="auth-card">
+
+    <!-- Logo -->
+    <div class="auth-logo">
+      <div class="logo-icon"><i class="bi bi-shop"></i></div>
+      <h1>TOKO KITA</h1>
+      <p>Kelola keuangan usaha Anda dengan mudah</p>
     </div>
 
-    <script>
-        let tasks = [];
-        let currentPriority = 'medium';
-        let currentFilter = 'all';
+    <!-- Tab Navigasi -->
+    <div class="auth-tabs">
+      <button class="auth-tab active" onclick="switchAuthTab('login')">Masuk</button>
+      <button class="auth-tab"        onclick="switchAuthTab('register')">Daftar</button>
+    </div>
 
-        function loadTasks() {
-            const saved = localStorage.getItem('taskflow_tasks');
-            if (saved) {
-                tasks = JSON.parse(saved);
-                renderTasks();
-            }
-        }
+    <!-- Form Login -->
+    <div id="login-form">
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-control" id="login-email" placeholder="nama@email.com" autocomplete="email">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Password</label>
+        <div class="input-group">
+          <input type="password" class="form-control" id="login-password" placeholder="Min. 6 karakter" autocomplete="current-password">
+          <button class="input-group-text" type="button" onclick="togglePwd('login-password', this)" aria-label="Tampilkan password">
+            <i class="bi bi-eye"></i>
+          </button>
+        </div>
+      </div>
+      <div class="mb-3 d-flex align-items-center justify-content-between">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="remember-me">
+          <label class="form-check-label" for="remember-me" style="font-size:0.85rem;color:var(--text-secondary);">
+            Ingat saya
+          </label>
+        </div>
+      </div>
+      <button class="btn-primary-custom" onclick="doLogin()">
+        <i class="bi bi-box-arrow-in-right"></i> Masuk
+      </button>
+      <p style="text-align:center;margin-top:1rem;font-size:0.825rem;color:var(--text-secondary)">
+        Belum punya akun?
+        <span style="color:var(--primary);cursor:pointer;font-weight:600" onclick="switchAuthTab('register')">Daftar di sini</span>
+      </p>
+    </div>
 
-        function saveTasks() {
-            localStorage.setItem('taskflow_tasks', JSON.stringify(tasks));
-        }
+    <!-- Form Register -->
+    <div id="register-form" style="display:none">
+      <div class="mb-3">
+        <label class="form-label">Nama Lengkap</label>
+        <input type="text" class="form-control" id="reg-name" placeholder="Nama Anda" autocomplete="name">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-control" id="reg-email" placeholder="nama@email.com" autocomplete="email">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Password</label>
+        <div class="input-group">
+          <input type="password" class="form-control" id="reg-password" placeholder="Min. 6 karakter" autocomplete="new-password">
+          <button class="input-group-text" type="button" onclick="togglePwd('reg-password', this)" aria-label="Tampilkan password">
+            <i class="bi bi-eye"></i>
+          </button>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Konfirmasi Password</label>
+        <input type="password" class="form-control" id="reg-confirm" placeholder="Ulangi password" autocomplete="new-password">
+      </div>
+      <button class="btn-primary-custom" onclick="doRegister()">
+        <i class="bi bi-person-plus"></i> Daftar Sekarang
+      </button>
+      <p style="text-align:center;margin-top:1rem;font-size:0.825rem;color:var(--text-secondary)">
+        Sudah punya akun?
+        <span style="color:var(--primary);cursor:pointer;font-weight:600" onclick="switchAuthTab('login')">Masuk di sini</span>
+      </p>
+    </div>
 
-        function setPriority(priority) {
-            currentPriority = priority;
-            document.querySelectorAll('.priority-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-        }
+  </div>
+</div><!-- /#auth-screen -->
 
-        function addTask() {
-            const input = document.getElementById('taskInput');
-            const text = input.value.trim();
 
-            if (text === '') return;
+<!-- ============================================================
+     MAIN APP SCREEN
+     ============================================================ -->
+<div id="app-screen">
 
-            const task = {
-                id: Date.now(),
-                text: text,
-                completed: false,
-                priority: currentPriority,
-                createdAt: new Date().toLocaleString('id-ID')
-            };
+  <!-- Sidebar Backdrop (mobile) -->
+  <div class="sidebar-backdrop" id="sidebar-backdrop" onclick="closeSidebar()"></div>
 
-            tasks.unshift(task);
-            input.value = '';
-            saveTasks();
-            renderTasks();
-        }
+  <!-- ===== SIDEBAR ===== -->
+  <nav class="sidebar" id="sidebar" aria-label="Menu Navigasi">
 
-        function toggleTask(id) {
-            const task = tasks.find(t => t.id === id);
-            if (task) {
-                task.completed = !task.completed;
-                saveTasks();
-                renderTasks();
-            }
-        }
+    <div class="sidebar-header">
+      <div class="sidebar-brand">
+        <div class="brand-icon"><i class="bi bi-shop" style="color:white"></i></div>
+        <span>TOKO KITA</span>
+      </div>
+    </div>
 
-        function deleteTask(id) {
-            tasks = tasks.filter(t => t.id !== id);
-            saveTasks();
-            renderTasks();
-        }
+    <div class="sidebar-user">
+      <div class="user-avatar" id="sidebar-avatar">TK</div>
+      <div class="user-info">
+        <div class="user-name"  id="sidebar-name">Pengguna</div>
+        <div class="user-email" id="sidebar-email">-</div>
+      </div>
+    </div>
 
-        function filterTasks(filter) {
-            currentFilter = filter;
-            document.querySelectorAll('.filter-tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            renderTasks();
-        }
+    <div class="nav-section">
+      <div class="nav-section-title">Menu Utama</div>
+      <button class="nav-item active" data-page="dashboard" onclick="navigate('dashboard')">
+        <i class="bi bi-speedometer2"></i> Dashboard
+      </button>
+      <button class="nav-item" data-page="transaksi" onclick="navigate('transaksi')">
+        <i class="bi bi-arrow-left-right"></i> Transaksi
+      </button>
+      <button class="nav-item" data-page="utang" onclick="navigate('utang')">
+        <i class="bi bi-people"></i> Utang Pelanggan
+      </button>
+      <button class="nav-item" data-page="laporan" onclick="navigate('laporan')">
+        <i class="bi bi-bar-chart-line"></i> Laporan
+      </button>
+    </div>
 
-        function renderTasks() {
-            const container = document.getElementById('tasksList');
+    <div class="sidebar-footer">
+      <button class="btn-logout" onclick="doLogout()">
+        <i class="bi bi-box-arrow-left"></i> Keluar
+      </button>
+    </div>
+  </nav>
 
-            let filteredTasks = tasks;
+  <!-- ===== MAIN CONTENT ===== -->
+  <div class="main-content" id="main-content">
 
-            if (currentFilter === 'active') {
-                filteredTasks = tasks.filter(t => !t.completed);
-            } else if (currentFilter === 'completed') {
-                filteredTasks = tasks.filter(t => t.completed);
-            } else if (['high', 'medium', 'low'].includes(currentFilter)) {
-                filteredTasks = tasks.filter(t => t.priority === currentFilter);
-            }
+    <!-- Top Bar -->
+    <header class="top-bar">
+      <div class="top-bar-left">
+        <button class="btn-toggle" onclick="toggleSidebar()" aria-label="Toggle Sidebar">
+          <i class="bi bi-list"></i>
+        </button>
+        <span class="page-title" id="page-title">Dashboard</span>
+      </div>
+      <div class="top-bar-right">
+        <button class="btn-theme" onclick="toggleTheme()" aria-label="Ganti Tema">
+          <i class="bi bi-moon-stars" id="theme-icon"></i>
+        </button>
+      </div>
+    </header>
 
-            if (filteredTasks.length === 0) {
-                container.innerHTML = `
-          <div class="empty-state">
-            <div class="empty-icon">📋</div>
-            <h3>Tidak ada tugas</h3>
-            <p>Mulai tambahkan tugas baru untuk memulai!</p>
-          </div>
-        `;
-            } else {
-                container.innerHTML = filteredTasks.map(task => `
-          <div class="task-item ${task.priority}">
-            <div class="task-checkbox ${task.completed ? 'checked' : ''}" onclick="toggleTask(${task.id})">
-              ${task.completed ? '✓' : ''}
+    <main class="page-content">
+
+      <!-- ================================================================
+           PAGE: DASHBOARD
+           ================================================================ -->
+      <div class="section-page active" id="page-dashboard">
+
+        <!-- Stat Cards -->
+        <div class="row g-3 mb-4">
+          <div class="col-6 col-md-3">
+            <div class="stat-card income">
+              <div class="stat-icon income"><i class="bi bi-arrow-down-circle"></i></div>
+              <div class="stat-label">Pemasukan</div>
+              <div class="stat-value income" id="stat-income">Rp 0</div>
             </div>
-            <div class="task-content">
-              <div class="task-text ${task.completed ? 'completed' : ''}">${task.text}</div>
-              <div class="task-meta">
-                <span class="task-time">🕒 ${task.createdAt}</span>
-                <span>📌 ${task.priority === 'high' ? 'Tinggi' : task.priority === 'medium' ? 'Sedang' : 'Rendah'}</span>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="stat-card expense">
+              <div class="stat-icon expense"><i class="bi bi-arrow-up-circle"></i></div>
+              <div class="stat-label">Pengeluaran</div>
+              <div class="stat-value expense" id="stat-expense">Rp 0</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="stat-card profit">
+              <div class="stat-icon profit"><i class="bi bi-graph-up-arrow"></i></div>
+              <div class="stat-label">Laba / Rugi</div>
+              <div class="stat-value profit" id="stat-profit">Rp 0</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="stat-card debt">
+              <div class="stat-icon debt"><i class="bi bi-person-lines-fill"></i></div>
+              <div class="stat-label">Total Utang</div>
+              <div class="stat-value debt" id="stat-debt">Rp 0</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="card-custom mb-4">
+          <div class="card-header-custom">
+            <h5><i class="bi bi-lightning-charge me-2"></i>Aksi Cepat</h5>
+          </div>
+          <div class="card-body-custom">
+            <div class="quick-actions">
+              <button class="quick-btn income-btn" onclick="openTrxModal('income')">
+                <i class="bi bi-plus-circle-fill"></i>
+                <span>Tambah Pemasukan</span>
+              </button>
+              <button class="quick-btn expense-btn" onclick="openTrxModal('expense')">
+                <i class="bi bi-dash-circle-fill"></i>
+                <span>Tambah Pengeluaran</span>
+              </button>
+              <button class="quick-btn debt-btn" onclick="navigate('utang')">
+                <i class="bi bi-people-fill"></i>
+                <span>Data Utang</span>
+              </button>
+              <button class="quick-btn report-btn" onclick="navigate('laporan')">
+                <i class="bi bi-file-earmark-bar-graph-fill"></i>
+                <span>Lihat Laporan</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Grafik + Transaksi Terbaru -->
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="card-custom h-100">
+              <div class="card-header-custom">
+                <h5><i class="bi bi-bar-chart me-2"></i>Grafik 6 Bulan Terakhir</h5>
+              </div>
+              <div class="card-body-custom">
+                <div class="chart-bar-wrap" id="chart-bars"></div>
+                <div class="chart-legend">
+                  <div class="chart-legend-item"><div class="chart-dot" style="background:var(--success)"></div>Pemasukan</div>
+                  <div class="chart-legend-item"><div class="chart-dot" style="background:var(--danger)"></div>Pengeluaran</div>
+                </div>
               </div>
             </div>
-            <div class="task-actions">
-              <button class="btn-icon btn-delete" onclick="deleteTask(${task.id})">🗑️</button>
+          </div>
+          <div class="col-md-6">
+            <div class="card-custom h-100">
+              <div class="card-header-custom">
+                <h5><i class="bi bi-clock-history me-2"></i>Transaksi Terbaru</h5>
+                <button class="btn-add" onclick="navigate('transaksi')">
+                  <i class="bi bi-eye"></i> Lihat Semua
+                </button>
+              </div>
+              <div class="table-wrapper">
+                <table class="tk-table">
+                  <thead>
+                    <tr><th>Keterangan</th><th>Tipe</th><th>Jumlah</th></tr>
+                  </thead>
+                  <tbody id="recent-trx-body"></tbody>
+                </table>
+              </div>
             </div>
           </div>
-        `).join('');
-            }
+        </div>
 
-            updateStats();
-        }
+      </div><!-- /#page-dashboard -->
 
-        function updateStats() {
-            const total = tasks.length;
-            const completed = tasks.filter(t => t.completed).length;
-            const progress = total > 0 ? (completed / total) * 100 : 0;
 
-            document.getElementById('totalTasks').textContent = total;
-            document.getElementById('completedTasks').textContent = completed;
-            document.getElementById('progressBar').style.width = progress + '%';
-        }
+      <!-- ================================================================
+           PAGE: TRANSAKSI
+           ================================================================ -->
+      <div class="section-page" id="page-transaksi">
+        <div class="card-custom">
+          <div class="card-header-custom">
+            <h5><i class="bi bi-arrow-left-right me-2"></i>Data Transaksi</h5>
+            <div class="d-flex gap-2 flex-wrap">
+              <button class="btn-add" onclick="openTrxModal('income')">
+                <i class="bi bi-plus"></i> Pemasukan
+              </button>
+              <button class="btn-add" style="background:linear-gradient(135deg,#C62828,#E53935)" onclick="openTrxModal('expense')">
+                <i class="bi bi-plus"></i> Pengeluaran
+              </button>
+            </div>
+          </div>
+          <div class="filter-bar">
+            <select class="filter-select" id="trx-filter-type" onchange="renderTrxTable()">
+              <option value="">Semua Tipe</option>
+              <option value="income">Pemasukan</option>
+              <option value="expense">Pengeluaran</option>
+            </select>
+            <input type="month" class="filter-input" id="trx-filter-month" onchange="renderTrxTable()">
+            <input type="text"  class="filter-input" id="trx-filter-search"
+              placeholder="Cari keterangan..."
+              oninput="renderTrxTable()"
+              style="flex:1;min-width:160px">
+          </div>
+          <div class="table-wrapper">
+            <table class="tk-table">
+              <thead>
+                <tr>
+                  <th>Tanggal</th>
+                  <th>Keterangan</th>
+                  <th>Kategori</th>
+                  <th>Tipe</th>
+                  <th>Jumlah</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="trx-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div><!-- /#page-transaksi -->
 
-        loadTasks();
 
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./service-worker.js')
-                    .then(() => console.log('Service Worker registered'))
-                    .catch(err => console.error('Service Worker error:', err));
-            });
-        }
-    </script>
+      <!-- ================================================================
+           PAGE: UTANG PELANGGAN
+           ================================================================ -->
+      <div class="section-page" id="page-utang">
+        <div class="card-custom">
+          <div class="card-header-custom">
+            <h5><i class="bi bi-people me-2"></i>Utang Pelanggan</h5>
+            <button class="btn-add" onclick="openDebtModal()">
+              <i class="bi bi-plus"></i> Tambah Utang
+            </button>
+          </div>
+          <div class="filter-bar">
+            <select class="filter-select" id="debt-filter-status" onchange="renderDebtTable()">
+              <option value="">Semua Status</option>
+              <option value="pending">Belum Lunas</option>
+              <option value="paid">Lunas</option>
+            </select>
+            <input type="text" class="filter-input" id="debt-filter-search"
+              placeholder="Cari nama pelanggan..."
+              oninput="renderDebtTable()"
+              style="flex:1;min-width:160px">
+          </div>
+          <div class="table-wrapper">
+            <table class="tk-table">
+              <thead>
+                <tr>
+                  <th>Nama</th>
+                  <th>No. HP</th>
+                  <th>Keterangan</th>
+                  <th>Jumlah</th>
+                  <th>Jatuh Tempo</th>
+                  <th>Status</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="debt-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div><!-- /#page-utang -->
+
+
+      <!-- ================================================================
+           PAGE: LAPORAN KEUANGAN
+           ================================================================ -->
+      <div class="section-page" id="page-laporan">
+
+        <div class="card-custom mb-3" style="border-radius:var(--radius-lg)">
+          <div class="filter-bar">
+            <span style="font-weight:600;font-size:0.875rem;color:var(--text-secondary)">
+              <i class="bi bi-funnel me-1"></i>Filter Periode:
+            </span>
+            <input type="month" class="filter-input" id="report-filter-month" onchange="renderReport()">
+            <button class="btn-add" onclick="renderReport()">
+              <i class="bi bi-arrow-clockwise"></i> Refresh
+            </button>
+          </div>
+        </div>
+
+        <!-- Ringkasan Laba/Rugi -->
+        <div class="report-summary" id="report-summary-card">
+          <div class="report-summary-title">Laba / Rugi Bersih</div>
+          <div class="report-summary-value" id="report-net">Rp 0</div>
+          <div style="font-size:0.85rem;opacity:0.75" id="report-period">-</div>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="card-custom">
+              <div class="card-header-custom">
+                <h5><i class="bi bi-file-earmark-text me-2"></i>Ringkasan Laba Rugi</h5>
+              </div>
+              <div class="card-body-custom" id="report-detail"></div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card-custom">
+              <div class="card-header-custom">
+                <h5><i class="bi bi-list-ul me-2"></i>Rincian Transaksi</h5>
+              </div>
+              <div class="card-body-custom" id="report-trx-list" style="max-height:400px;overflow-y:auto"></div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /#page-laporan -->
+
+    </main><!-- /.page-content -->
+  </div><!-- /.main-content -->
+</div><!-- /#app-screen -->
+
+
+<!-- ============================================================
+     MODAL: TAMBAH / EDIT TRANSAKSI
+     ============================================================ -->
+<div class="modal fade" id="trxModal" tabindex="-1" aria-labelledby="trxModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="trxModalTitle">Tambah Transaksi</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+      </div>
+
+      <div class="modal-body">
+        <input type="hidden" id="trx-edit-id">
+
+        <div class="mb-3">
+          <label class="form-label">Tipe Transaksi</label>
+          <select class="form-control" id="trx-type">
+            <option value="income">Pemasukan</option>
+            <option value="expense">Pengeluaran</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Tanggal</label>
+          <input type="date" class="form-control" id="trx-date">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Keterangan</label>
+          <input type="text" class="form-control" id="trx-desc" placeholder="Misal: Penjualan produk A">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Kategori</label>
+          <input type="text" class="form-control" id="trx-cat" placeholder="Misal: Penjualan, Operasional">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Jumlah (Rp)</label>
+          <input type="number" class="form-control" id="trx-amount" placeholder="0" min="0" step="1000">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Catatan <span style="color:var(--text-muted)">(opsional)</span></label>
+          <textarea class="form-control" id="trx-note" rows="2" placeholder="Catatan tambahan..."></textarea>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        <button type="button" class="btn-add" onclick="saveTrx()">
+          <i class="bi bi-check2 me-1"></i> Simpan
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div><!-- /#trxModal -->
+
+
+<!-- ============================================================
+     MODAL: TAMBAH / EDIT UTANG PELANGGAN
+     ============================================================ -->
+<div class="modal fade" id="debtModal" tabindex="-1" aria-labelledby="debtModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="debtModalTitle">Tambah Utang Pelanggan</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+      </div>
+
+      <div class="modal-body">
+        <input type="hidden" id="debt-edit-id">
+
+        <div class="mb-3">
+          <label class="form-label">Nama Pelanggan</label>
+          <input type="text" class="form-control" id="debt-name" placeholder="Nama lengkap pelanggan">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">No. WhatsApp <span style="color:var(--text-muted)">(untuk pengingat)</span></label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-whatsapp"></i></span>
+            <input type="tel" class="form-control" id="debt-phone" placeholder="628xxx atau 08xxx">
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Keterangan Utang</label>
+          <input type="text" class="form-control" id="debt-desc" placeholder="Misal: Pembelian beras 10kg">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Jumlah Utang (Rp)</label>
+          <input type="number" class="form-control" id="debt-amount" placeholder="0" min="0" step="1000">
+        </div>
+        <div class="row">
+          <div class="col-6 mb-3">
+            <label class="form-label">Tanggal Utang</label>
+            <input type="date" class="form-control" id="debt-date">
+          </div>
+          <div class="col-6 mb-3">
+            <label class="form-label">Jatuh Tempo <span style="color:var(--text-muted)">(opsional)</span></label>
+            <input type="date" class="form-control" id="debt-due">
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Status</label>
+          <select class="form-control" id="debt-status">
+            <option value="pending">Belum Lunas</option>
+            <option value="paid">Lunas</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        <button type="button" class="btn-add" onclick="saveDebt()">
+          <i class="bi bi-check2 me-1"></i> Simpan
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div><!-- /#debtModal -->
+
+
+<!-- ============================================================
+     BOOTSTRAP 5 JS
+     ============================================================ -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- ============================================================
+     APP JS
+     ============================================================ -->
+<script src="./app.js"></script>
 
 </body>
-
 </html>

@@ -1,48 +1,923 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="theme-color" content="#4F46E5" />
-  <link rel="manifest" href="manifest.json" />
-  <link rel="icon" href="icons/icon-192x192-A.png" type="image/png" />
-  <title>PWA Template Responsif</title>
-  <link rel="stylesheet" href="assets/style.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TOKO KITA — Example & Panduan Komponen</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./style.css">
+<style>
+  .example-section {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    margin-bottom: 2rem;
+    overflow: hidden;
+  }
+  .example-section-header {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    padding: 1rem 1.5rem;
+    color: white;
+  }
+  .example-section-header h2 {
+    font-family: var(--font-main);
+    font-size: 1rem; font-weight: 700; margin: 0;
+  }
+  .example-section-header p {
+    font-size: 0.8rem; opacity: 0.8; margin: 4px 0 0;
+  }
+  .example-body { padding: 1.5rem; }
+  .code-block {
+    background: #0A1929;
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    margin-top: 1rem;
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: #90CAF9;
+    overflow-x: auto;
+    white-space: pre;
+  }
+  .code-block .tag   { color: #EF9A9A; }
+  .code-block .attr  { color: #A5D6A7; }
+  .code-block .val   { color: #FFE082; }
+  .code-block .cmt   { color: #546E7A; }
+  .divider {
+    border: none; border-top: 1px dashed var(--border-color);
+    margin: 1.5rem 0;
+  }
+  .label-tag {
+    display: inline-block;
+    background: var(--primary-xlight);
+    color: var(--primary);
+    font-size: 0.7rem; font-weight: 700;
+    padding: 2px 8px; border-radius: 20px;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  .top-nav {
+    background: var(--bg-sidebar);
+    padding: 1rem 1.5rem;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+    margin-bottom: 2rem;
+  }
+  .top-nav-brand {
+    display: flex; align-items: center; gap: 10px;
+    font-family: var(--font-main); font-size: 1.1rem;
+    font-weight: 700; color: white;
+  }
+  .top-nav-brand .icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: rgba(255,255,255,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+  }
+  .top-nav-right { display: flex; gap: 10px; align-items: center; }
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.15);
+    color: white; border: none; border-radius: 8px;
+    padding: 6px 14px; font-size: 0.85rem; font-weight: 600;
+    cursor: pointer; transition: var(--transition);
+    text-decoration: none;
+  }
+  .back-btn:hover { background: rgba(255,255,255,0.25); color: white; }
+  .section-index {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .section-index h3 {
+    font-family: var(--font-main); font-size: 0.95rem;
+    font-weight: 700; color: var(--text-primary); margin-bottom: 12px;
+  }
+  .index-list { display: flex; flex-wrap: wrap; gap: 8px; }
+  .index-link {
+    background: var(--primary-xlight); color: var(--primary);
+    border-radius: 8px; padding: 5px 12px;
+    font-size: 0.8rem; font-weight: 600;
+    text-decoration: none; transition: var(--transition);
+  }
+  .index-link:hover { background: var(--primary); color: white; }
+</style>
 </head>
-
 <body>
-  <header class="header">
-    <h1>PWA Template</h1>
-    <p>Contoh aplikasi web progresif yang responsif</p>
-  </header>
 
-  <main class="main">
-    <section class="card">
-      <h2>Selamat Datang!</h2>
-      <p>
-        Ini adalah template PWA responsif. Kamu bisa ubah teks, warna, dan layout-nya sesuai kebutuhan.
-      </p>
-      <button onclick="alert('PWA aktif!')">Tes Tombol</button>
-    </section>
-  </main>
-  <button onclick="alert('tombol testing hidup')">Ini tombol 1</button>
+<!-- Top Navigation -->
+<div class="top-nav">
+  <div class="top-nav-brand">
+    <div class="icon"><i class="bi bi-shop" style="color:white"></i></div>
+    TOKO KITA — Example & Panduan
+  </div>
+  <div class="top-nav-right">
+    <button class="btn-theme" onclick="toggleTheme()">
+      <i class="bi bi-moon-stars" id="theme-icon"></i>
+    </button>
+    <a href="./index.html" class="back-btn">
+      <i class="bi bi-arrow-left"></i> Kembali ke App
+    </a>
+  </div>
+</div>
 
-  <footer class="footer">
-    <p>© 2025 Anwar Fauzi</p>
-  </footer>
+<div class="container-fluid" style="max-width:960px; padding: 0 1.5rem 3rem;">
 
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./service-worker.js')
-        .then(() => console.log('SW registered!'))
-        .catch(err => console.error('SW gagal:', err));
-    }
-  </script>
+  <!-- Daftar Isi -->
+  <div class="section-index">
+    <h3><i class="bi bi-list-ul me-2"></i>Daftar Isi Komponen</h3>
+    <div class="index-list">
+      <a href="#sec-buttons"    class="index-link">Tombol</a>
+      <a href="#sec-badges"     class="index-link">Badge / Status</a>
+      <a href="#sec-statcards"  class="index-link">Stat Cards</a>
+      <a href="#sec-cards"      class="index-link">Card</a>
+      <a href="#sec-table"      class="index-link">Tabel</a>
+      <a href="#sec-forms"      class="index-link">Form Input</a>
+      <a href="#sec-toast"      class="index-link">Toast Notifikasi</a>
+      <a href="#sec-loading"    class="index-link">Loading</a>
+      <a href="#sec-empty"      class="index-link">Empty State</a>
+      <a href="#sec-chart"      class="index-link">Grafik Bar</a>
+      <a href="#sec-quickact"   class="index-link">Quick Actions</a>
+      <a href="#sec-modal"      class="index-link">Modal</a>
+      <a href="#sec-report"     class="index-link">Laporan</a>
+      <a href="#sec-colors"     class="index-link">Warna & Tema</a>
+    </div>
+  </div>
 
+
+  <!-- ============================================================
+       1. TOMBOL
+       ============================================================ -->
+  <div class="example-section" id="sec-buttons">
+    <div class="example-section-header">
+      <h2><i class="bi bi-hand-index me-2"></i>1. Tombol (Buttons)</h2>
+      <p>Semua varian tombol yang digunakan di TOKO KITA</p>
+    </div>
+    <div class="example-body">
+
+      <div class="label-tag">Tombol Utama</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:1rem">
+        <button class="btn-add"><i class="bi bi-plus"></i> Tambah Data</button>
+        <button class="btn-add" style="background:linear-gradient(135deg,#C62828,#E53935)"><i class="bi bi-plus"></i> Pengeluaran</button>
+        <button class="btn-add" style="background:linear-gradient(135deg,#2E7D32,#43A047)"><i class="bi bi-check2"></i> Simpan</button>
+        <button class="btn-add" style="background:linear-gradient(135deg,#F57F17,#F9A825)"><i class="bi bi-pencil"></i> Edit</button>
+      </div>
+
+      <hr class="divider">
+      <div class="label-tag">Tombol Aksi Kecil (Tabel)</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem">
+        <button class="btn-sm-action"><i class="bi bi-pencil"></i> Edit</button>
+        <button class="btn-sm-action btn-sm-danger"><i class="bi bi-trash"></i> Hapus</button>
+        <button class="btn-sm-action"><i class="bi bi-check-circle"></i> Lunas</button>
+        <button class="btn-sm-action"><i class="bi bi-eye"></i> Lihat</button>
+      </div>
+
+      <hr class="divider">
+      <div class="label-tag">Tombol WhatsApp</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem">
+        <button class="btn-wa"><i class="bi bi-whatsapp"></i> Kirim WA</button>
+        <button class="btn-wa"><i class="bi bi-whatsapp"></i> Ingatkan Utang</button>
+      </div>
+
+      <hr class="divider">
+      <div class="label-tag">Tombol Auth (Full Width)</div>
+      <div style="max-width:360px">
+        <button class="btn-primary-custom"><i class="bi bi-box-arrow-in-right"></i> Masuk</button>
+        <div style="height:8px"></div>
+        <button class="btn-primary-custom" style="background:linear-gradient(135deg,#2E7D32,#43A047)">
+          <i class="bi bi-person-plus"></i> Daftar Sekarang
+        </button>
+      </div>
+
+      <div class="code-block"><span class="cmt"><!-- Tombol tambah biasa --></span>
+<span class="tag">&lt;button</span> <span class="attr">class</span>=<span class="val">"btn-add"</span><span class="tag">&gt;</span>
+  &lt;i class="bi bi-plus"&gt;&lt;/i&gt; Tambah Data
+<span class="tag">&lt;/button&gt;</span>
+
+<span class="cmt"><!-- Tombol aksi kecil --></span>
+<span class="tag">&lt;button</span> <span class="attr">class</span>=<span class="val">"btn-sm-action"</span><span class="tag">&gt;</span>&lt;i class="bi bi-pencil"&gt;&lt;/i&gt;<span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;button</span> <span class="attr">class</span>=<span class="val">"btn-sm-action btn-sm-danger"</span><span class="tag">&gt;</span>&lt;i class="bi bi-trash"&gt;&lt;/i&gt;<span class="tag">&lt;/button&gt;</span>
+
+<span class="cmt"><!-- Tombol WhatsApp --></span>
+<span class="tag">&lt;button</span> <span class="attr">class</span>=<span class="val">"btn-wa"</span><span class="tag">&gt;</span>&lt;i class="bi bi-whatsapp"&gt;&lt;/i&gt; Kirim WA<span class="tag">&lt;/button&gt;</span></div>
+    </div>
+  </div>
+
+
+  <!-- ============================================================
+       2. BADGE / STATUS
+       ============================================================ -->
+  <div class="example-section" id="sec-badges">
+    <div class="example-section-header">
+      <h2><i class="bi bi-tag me-2"></i>2. Badge / Status Label</h2>
+      <p>Label status untuk transaksi dan utang</p>
+    </div>
+    <div class="example-body">
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:1rem">
+        <span class="badge-income">Pemasukan</span>
+        <span class="badge-expense">Pengeluaran</span>
+        <span class="badge-pending">Belum Lunas</span>
+        <span class="badge-paid">Lunas</span>
+      </div>
+      <div class="code-block"><span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="val">"badge-income"</span><span class="tag">&gt;</span>Pemasukan<span class="tag">&lt;/span&gt;</span>
+<span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="val">"badge-expense"</span><span class="tag">&gt;</span>Pengeluaran<span class="tag">&lt;/span&gt;</span>
+<span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="val">"badge-pending"</span><span class="tag">&gt;</span>Belum Lunas<span class="tag">&lt;/span&gt;</span>
+<span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="val">"badge-paid"</span><span class="tag">&gt;</span>Lunas<span class="tag">&lt;/span&gt;</span></div>
+    </div>
+  </div>
+
+
+  <!-- ============================================================
+       3. STAT CARDS
+       ============================================================ -->
+  <div class="example-section" id="sec-statcards">
+    <div class="example-section-header">
+      <h2><i class="bi bi-grid-1x2 me-2"></i>3. Stat Cards (Kartu Ringkasan)</h2>
+      <p>Kartu ringkasan angka di halaman Dashboard</p>
+    </div>
+    <div class="example-body">
+      <div class="row g-3">
+        <div class="col-6 col-md-3">
+          <div class="stat-card income">
+            <div class="stat-icon income"><i class="bi bi-arrow-down-circle"></i></div>
+            <div class="stat-label">Pemasukan</div>
+            <div class="stat-value income">Rp 5.250.000</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="stat-card expense">
+            <div class="stat-icon expense"><i class="bi bi-arrow-up-circle"></i></div>
+            <div class="stat-label">Pengeluaran</div>
+            <div class="stat-value expense">Rp 2.100.000</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="stat-card profit">
+            <div class="stat-icon profit"><i class="bi bi-graph-up-arrow"></i></div>
+            <div class="stat-label">Laba / Rugi</div>
+            <div class="stat-value profit">+Rp 3.150.000</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="stat-card debt">
+            <div class="stat-icon debt"><i class="bi bi-person-lines-fill"></i></div>
+            <div class="stat-label">Total Utang</div>
+            <div class="stat-value debt">Rp 750.000</div>
+          </div>
+        </div>
+      </div>
+      <div class="code-block"><span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"stat-card income"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"stat-icon income"</span><span class="tag">&gt;</span>&lt;i class="bi bi-arrow-down-circle"&gt;&lt;/i&gt;<span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"stat-label"</span><span class="tag">&gt;</span>Pemasukan<span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"stat-value income"</span><span class="tag">&gt;</span>Rp 5.250.000<span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="cmt"><!-- Varian: income | expense | profit | debt --></span></div>
+    </div>
+  </div>
+
+
+  <!-- ============================================================
+       4. CARD
+       ============================================================ -->
+  <div class="example-section" id="sec-cards">
+    <div class="example-section-header">
+      <h2><i class="bi bi-card-text me-2"></i>4. Card (Kartu Konten)</h2>
+      <p>Pembungkus konten utama dengan header dan body</p>
+    </div>
+    <div class="example-body">
+      <div class="card-custom">
+        <div class="card-header-custom">
+          <h5><i class="bi bi-star me-2"></i>Judul Card</h5>
+          <button class="btn-add"><i class="bi bi-plus"></i> Aksi</button>
+        </div>
+        <div class="card-body-custom">
+          <p style="color:var(--text-secondary);font-size:0.9rem;margin:0">
+            Ini adalah isi konten card. Bisa berisi tabel, form, teks, atau komponen lainnya.
+          </p>
+        </div>
+      </div>
+      <div class="code-block"><span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"card-custom"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"card-header-custom"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;h5&gt;</span>Judul Card<span class="tag">&lt;/h5&gt;</span>
+    <span class="tag">&lt;button</span> <span class="attr">class</span>=<span class="val">"btn-add"</span><span class="tag">&gt;</span>Aksi<span class="tag">&lt;/button&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"card-body-custom"</span><span class="tag">&gt;</span>
+    Isi konten di sini...
+  <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span></div>
+    </div>
+  </div>
+
+
+  <!-- ============================================================
+       5. TABEL
+       ============================================================ -->
+  <div class="example-section" id="sec-table">
+    <div class="example-section-header">
+      <h2><i class="bi bi-table me-2"></i>5. Tabel Data</h2>
+      <p>Tabel untuk daftar transaksi dan utang pelanggan</p>
+    </div>
+    <div class="example-body">
+      <div class="table-wrapper">
+        <table class="tk-table">
+          <thead>
+            <tr>
+              <th>Tanggal</th>
+              <th>Keterangan</th>
+              <th>Kategori</th>
+              <th>Tipe</th>
+              <th>Jumlah</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>15 Jan 2025</td>
+              <td>
+                <div style="font-weight:500">Penjualan Produk A</div>
+                <div style="font-size:0.75rem;color:var(--text-muted)">Catatan tambahan</div>
+              </td>
+              <td>Penjualan</td>
+              <td><span class="badge-income">Pemasukan</span></td>
+              <td style="font-weight:700;color:var(--success)">+Rp 500.000</td>
+              <td>
+                <button class="btn-sm-action me-1"><i class="bi bi-pencil"></i></button>
+                <button class="btn-sm-action btn-sm-danger"><i class="bi bi-trash"></i></button>
+              </td>
+            </tr>
+            <tr>
+              <td>14 Jan 2025</td>
+              <td>
+                <div style="font-weight:500">Beli Stok Barang</div>
+              </td>
+              <td>Operasional</td>
+              <td><span class="badge-expense">Pengeluaran</span></td>
+              <td style="font-weight:700;color:var(--danger)">-Rp 200.000</td>
+              <td>
+                <button class="btn-sm-action me-1"><i class="bi bi-pencil"></i></button>
+                <button class="btn-sm-action btn-sm-danger"><i class="bi bi-trash"></i></button>
+              </td>
+            </tr>
+            <tr>
+              <td>13 Jan 2025</td>
+              <td>
+                <div style="font-weight:500">Jasa Pengiriman</div>
+              </td>
+              <td>Logistik</td>
+              <td><span class="badge-expense">Pengeluaran</span></td>
+              <td style="font-weight:700;color:var(--danger)">-Rp 50.000</td>
+              <td>
+                <button class="btn-sm-action me-1"><i class="bi bi-pencil"></i></button>
+                <button class="btn-sm-action btn-sm-danger"><i class="bi bi-trash"></i></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="code-block"><span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"table-wrapper"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;table</span> <span class="attr">class</span>=<span class="val">"tk-table"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;thead&gt;&lt;tr&gt;</span>
+      <span class="tag">&lt;th&gt;</span>Tanggal<span class="tag">&lt;/th&gt;</span>
+      <span class="tag">&lt;th&gt;</span>Keterangan<span class="tag">&lt;/th&gt;</span>
+      <span class="tag">&lt;th&gt;</span>Jumlah<span class="tag">&lt;/th&gt;</span>
+    <span class="tag">&lt;/tr&gt;&lt;/thead&gt;</span>
+    <span class="tag">&lt;tbody&gt;</span>
+      <span class="tag">&lt;tr&gt;</span>
+        <span class="tag">&lt;td&gt;</span>15 Jan 2025<span class="tag">&lt;/td&gt;</span>
+        <span class="tag">&lt;td&gt;</span>Penjualan<span class="tag">&lt;/td&gt;</span>
+        <span class="tag">&lt;td&gt;</span>+Rp 500.000<span class="tag">&lt;/td&gt;</span>
+      <span class="tag">&lt;/tr&gt;</span>
+    <span class="tag">&lt;/tbody&gt;</span>
+  <span class="tag">&lt;/table&gt;</span>
+<span class="tag">&lt;/div&gt;</span></div>
+    </div>
+  </div>
+
+
+  <!-- ============================================================
+       6. FORM INPUT
+       ============================================================ -->
+  <div class="example-section" id="sec-forms">
+    <div class="example-section-header">
+      <h2><i class="bi bi-input-cursor-text me-2"></i>6. Form Input</h2>
+      <p>Semua jenis input yang digunakan di modal dan filter</p>
+    </div>
+    <div class="example-body">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="label-tag">Input Teks</div>
+          <div class="mb-3">
+            <label class="form-label">Keterangan</label>
+            <input type="text" class="form-control" placeholder="Contoh: Penjualan produk A">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Jumlah (Rp)</label>
+            <input type="number" class="form-control" placeholder="0" min="0">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Tanggal</label>
+            <input type="date" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Bulan</label>
+            <input type="month" class="form-control">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="label-tag">Input dengan Icon</div>
+          <div class="mb-3">
+            <label class="form-label">No. WhatsApp</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-whatsapp"></i></span>
+              <input type="tel" class="form-control" placeholder="628xxx">
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Password</label>
+            <div class="input-group">
+              <input type="password" class="form-control" id="ex-pwd" placeholder="Min. 6 karakter">
+              <button class="input-group-text" onclick="togglePwd('ex-pwd', this)">
+                <i class="bi bi-eye"></i>
+              </button>
+            </div>
+          </div>
+          <div class="label-tag">Dropdown & Textarea</div>
+          <div class="mb-3">
+            <label class="form-label">Tipe Transaksi</label>
+            <select class="form-control">
+              <option value="income">Pemasukan</option>
+              <option value="expense">Pengeluaran</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Catatan</label>
+            <textarea class="form-control" rows="2" placeholder="Catatan tambahan..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+      <div class="label-tag">Filter Bar</div>
+      <div class="filter-bar" style="border-bottom:none;padding:0;background:transparent;margin-top:4px">
+        <select class="filter-select">
+          <option>Semua Tipe</option>
+          <option>Pemasukan</option>
+          <option>Pengeluaran</option>
+        </select>
+        <input type="month" class="filter-input">
+        <input type="text" class="filter-input" placeholder="Cari keterangan..." style="flex:1;min-width:160px">
+      </div>
+
+      <div class="code-block"><span class="cmt"><!-- Input biasa --></span>
+<span class="tag">&lt;label</span> <span class="attr">class</span>=<span class="val">"form-label"</span><span class="tag">&gt;</span>Keterangan<span class="tag">&lt;/label&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"text"</span> <span class="attr">class</span>=<span class="val">"form-control"</span> <span class="attr">placeholder</span>=<span class="val">"..."</span><span class="tag">&gt;</span>
+
+<span class="cmt"><!-- Input dengan ikon --></span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"input-group"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="val">"input-group-text"</span><span class="tag">&gt;</span>&lt;i class="bi bi-whatsapp"&gt;&lt;/i&gt;<span class="tag">&lt;/span&gt;</span>
+  <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"tel"</span> <span class="attr">class</span>=<span class="val">"form-control"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="cmt"><!-- Filter --></span>
+<span class="tag">&lt;select</span> <span class="attr">class</span>=<span class="val">"filter-select"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/select&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"text"</span> <span class="attr">class</span>=<span class="val">"filter-input"</span><span class="tag">&gt;</span></div>
+    </div>
+  </div>
+
+
+  <!-- ============================================================
+       7. TOAST NOTIFIKASI
+       ============================================================ -->
+  <div class="example-section" id="sec-toast">
+    <div class="example-section-header">
+      <h2><i class="bi bi-bell me-2"></i>7. Toast Notifikasi</h2>
+      <p>Notifikasi pop-up di sudut kanan bawah layar</p>
+    </div>
+    <div class="example-body">
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:1rem">
+        <button class="btn-add" onclick="showToast('Data berhasil disimpan!', 'success')">
+          <i class="bi bi-check-circle"></i> Toast Sukses
+        </button>
+        <button class="btn-add" style="background:linear-gradient(135deg,#C62828,#E53935)"
+          onclick="showToast('Terjadi kesalahan!', 'error')">
+          <i class="bi bi-x-circle"></i> Toast Error
+        </button>
+        <button class="btn-add" style="background:linear-gradient(135deg,#1565C0,#1976D2)"
+          onclick="showToast('Informasi untuk pengguna.', 'info')">
+          <i class="bi bi-info-circle"></i> Toast Info
+        </button>
+      </div>
+      <div class="code-block"><span class="cmt">// Panggil dari app.js</span>
+showToast(<span class="val">'Data berhasil disimpan!'</span>, <span class="val">'success'</span>);
+showToast(<span class="val">'Terjadi kesalahan!'</span>,    <span class="val">'error'</span>);
+showToast(<span class="val">'Informasi penting.'</span>,    <span class="val">'info'</span>);</div>
+    </div>
+  </div>
+
+
+  <!-- ============================================================
+       8. LOADING
+       ============================================================ -->
+  <div class="example-section" id="sec-loading">
+    <div class="example-section-header">
+      <h2><i class="bi bi-hourglass-split me-2"></i>8. Loading Overlay</h2>
+      <p>Overlay loading saat memproses data</p>
+    </div>
+    <div class="example-body">
+      <button class="btn-add" onclick="showLoading('Menyimpan data...'); setTimeout(hideLoading, 2000)">
+        <i class="bi bi-play-circle"></i> Demo Loading (2 detik)
+      </button>
+      <div class="code-block"><span class="cmt">// Tampilkan loading</span>
+showLoading(<span class="val">'Menyimpan data...'</span>);
+
+<span class="cmt">// Sembunyikan setelah selesai</span>
+hideLoading();</div>
+    </div>
+  </div>
+
+
+  <!-- ============================================================
+       9. EMPTY STATE
+       ============================================================ -->
+  <div class="example-section" id="sec-empty">
+    <div class="example-section-header">
+      <h2><i class="bi bi-inbox me-2"></i>9. Empty State</h2>
+      <p>Tampilan saat tidak ada data</p>
+    </div>
+    <div class="example-body">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <div class="card-custom">
+            <div class="empty-state">
+              <i class="bi bi-inbox"></i>
+              <p>Belum ada transaksi</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card-custom">
+            <div class="empty-state">
+              <i class="bi bi-people"></i>
+              <p>Belum ada data utang</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card-custom">
+            <div class="empty-state">
+              <i class="bi bi-calendar-x"></i>
+              <p>Tidak ada data periode ini</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="code-block"><span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"empty-state"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;i</span> <span class="attr">class</span>=<span class="val">"bi bi-inbox"</span><span class="tag">&gt;&lt;/i&gt;</span>
+  <span class="tag">&lt;p&gt;</span>Belum ada transaksi<span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;/div&gt;</span></div>
+    </div>
+  </div>
+
+
+  <!-- ============================================================
+       10. GRAFIK BAR
+       ============================================================ -->
+  <div class="example-section" id="sec-chart">
+    <div class="example-section-header">
+      <h2><i class="bi bi-bar-chart me-2"></i>10. Grafik Bar</h2>
+      <p>Grafik batang perbandingan pemasukan vs pengeluaran</p>
+    </div>
+    <div class="example-body">
+      <div class="chart-bar-wrap" id="ex-chart"></div>
+      <div class="chart-legend">
+        <div class="chart-legend-item"><div class="chart-dot" style="background:var(--success)"></div>Pemasukan</div>
+        <div class="chart-legend-item"><div class="chart-dot" style="background:var(--danger)"></div>Pengeluaran</div>
+      </div>
+      <div class="code-block"><span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"chart-bar-wrap"</span><span class="tag">&gt;</span>
+  <span class="cmt">&lt;!-- diisi oleh JavaScript (updateDashboard) --&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"chart-bar-item"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attr">style</span>=<span class="val">"display:flex;align-items:flex-end;gap:3px;height:120px"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"chart-bar income-bar"</span>  <span class="attr">style</span>=<span class="val">"height:80px;width:14px"</span><span class="tag">&gt;&lt;/div&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"chart-bar expense-bar"</span> <span class="attr">style</span>=<span class="val">"height:40px;width:14px"</span><span class="tag">&gt;&lt;/div&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+    <span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="val">"chart-bar-label"</span><span class="tag">&gt;</span>Jan<span class="tag">&lt;/span&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span></div>
+    </div>
+  </div>
+
+
+  <!-- ============================================================
+       11. QUICK ACTIONS
+       ============================================================ -->
+  <div class="example-section" id="sec-quickact">
+    <div class="example-section-header">
+      <h2><i class="bi bi-lightning-charge me-2"></i>11. Quick Actions</h2>
+      <p>Tombol aksi cepat di Dashboard</p>
+    </div>
+    <div class="example-body">
+      <div class="quick-actions">
+        <button class="quick-btn income-btn">
+          <i class="bi bi-plus-circle-fill"></i>
+          <span>Tambah Pemasukan</span>
+        </button>
+        <button class="quick-btn expense-btn">
+          <i class="bi bi-dash-circle-fill"></i>
+          <span>Tambah Pengeluaran</span>
+        </button>
+        <button class="quick-btn debt-btn">
+          <i class="bi bi-people-fill"></i>
+          <span>Data Utang</span>
+        </button>
+        <button class="quick-btn report-btn">
+          <i class="bi bi-file-earmark-bar-graph-fill"></i>
+          <span>Lihat Laporan</span>
+        </button>
+      </div>
+      <div class="code-block"><span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"quick-actions"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;button</span> <span class="attr">class</span>=<span class="val">"quick-btn income-btn"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;i</span> <span class="attr">class</span>=<span class="val">"bi bi-plus-circle-fill"</span><span class="tag">&gt;&lt;/i&gt;</span>
+    <span class="tag">&lt;span&gt;</span>Tambah Pemasukan<span class="tag">&lt;/span&gt;</span>
+  <span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+<span class="cmt">&lt;!-- Varian: income-btn | expense-btn | debt-btn | report-btn --&gt;</span></div>
+    </div>
+  </div>
+
+
+  <!-- ============================================================
+       12. MODAL
+       ============================================================ -->
+  <div class="example-section" id="sec-modal">
+    <div class="example-section-header">
+      <h2><i class="bi bi-window me-2"></i>12. Modal Dialog</h2>
+      <p>Popup form untuk tambah/edit data</p>
+    </div>
+    <div class="example-body">
+      <button class="btn-add" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <i class="bi bi-eye"></i> Lihat Contoh Modal
+      </button>
+      <div class="code-block"><span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"modal fade"</span> <span class="attr">id</span>=<span class="val">"myModal"</span> <span class="attr">tabindex</span>=<span class="val">"-1"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"modal-dialog modal-dialog-centered"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"modal-content"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"modal-header"</span><span class="tag">&gt;</span>
+        <span class="tag">&lt;h5</span> <span class="attr">class</span>=<span class="val">"modal-title"</span><span class="tag">&gt;</span>Judul Modal<span class="tag">&lt;/h5&gt;</span>
+        <span class="tag">&lt;button</span> <span class="attr">class</span>=<span class="val">"btn-close"</span> <span class="attr">data-bs-dismiss</span>=<span class="val">"modal"</span><span class="tag">&gt;&lt;/button&gt;</span>
+      <span class="tag">&lt;/div&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"modal-body"</span><span class="tag">&gt;</span>
+        Isi form di sini...
+      <span class="tag">&lt;/div&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"modal-footer"</span><span class="tag">&gt;</span>
+        <span class="tag">&lt;button</span> <span class="attr">class</span>=<span class="val">"btn btn-secondary"</span> <span class="attr">data-bs-dismiss</span>=<span class="val">"modal"</span><span class="tag">&gt;</span>Batal<span class="tag">&lt;/button&gt;</span>
+        <span class="tag">&lt;button</span> <span class="attr">class</span>=<span class="val">"btn-add"</span><span class="tag">&gt;</span>Simpan<span class="tag">&lt;/button&gt;</span>
+      <span class="tag">&lt;/div&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span></div>
+    </div>
+  </div>
+
+
+  <!-- ============================================================
+       13. LAPORAN / REPORT SUMMARY
+       ============================================================ -->
+  <div class="example-section" id="sec-report">
+    <div class="example-section-header">
+      <h2><i class="bi bi-file-earmark-bar-graph me-2"></i>13. Laporan Keuangan</h2>
+      <p>Kartu ringkasan laba rugi dan detail transaksi</p>
+    </div>
+    <div class="example-body">
+
+      <div class="label-tag">Kartu Laba (Hijau)</div>
+      <div class="report-summary mb-3">
+        <div class="report-summary-title">Laba / Rugi Bersih</div>
+        <div class="report-summary-value">+Rp 3.150.000</div>
+        <div style="font-size:0.85rem;opacity:0.75">Periode: Januari 2025</div>
+      </div>
+
+      <div class="label-tag">Kartu Rugi (Merah)</div>
+      <div class="report-summary mb-3" style="background:linear-gradient(135deg,#C62828,#E53935)">
+        <div class="report-summary-title">Laba / Rugi Bersih</div>
+        <div class="report-summary-value">-Rp 500.000</div>
+        <div style="font-size:0.85rem;opacity:0.75">Periode: Februari 2025</div>
+      </div>
+
+      <div class="label-tag">Detail Laporan</div>
+      <div class="card-custom">
+        <div class="card-body-custom">
+          <div class="report-item">
+            <div class="report-item-label">
+              <div style="width:36px;height:36px;border-radius:10px;background:var(--success-light);display:flex;align-items:center;justify-content:center;color:var(--success)">
+                <i class="bi bi-arrow-down-circle-fill"></i>
+              </div>
+              Total Pemasukan
+            </div>
+            <div class="report-item-value" style="color:var(--success)">+Rp 5.250.000</div>
+          </div>
+          <div class="report-item">
+            <div class="report-item-label">
+              <div style="width:36px;height:36px;border-radius:10px;background:var(--danger-light);display:flex;align-items:center;justify-content:center;color:var(--danger)">
+                <i class="bi bi-arrow-up-circle-fill"></i>
+              </div>
+              Total Pengeluaran
+            </div>
+            <div class="report-item-value" style="color:var(--danger)">-Rp 2.100.000</div>
+          </div>
+          <div class="report-item" style="border-top:2px solid var(--border-color);margin-top:4px;padding-top:14px">
+            <div class="report-item-label" style="font-weight:700">
+              <div style="width:36px;height:36px;border-radius:10px;background:var(--primary-xlight);display:flex;align-items:center;justify-content:center;color:var(--primary)">
+                <i class="bi bi-calculator-fill"></i>
+              </div>
+              Laba / Rugi Bersih
+            </div>
+            <div class="report-item-value" style="color:var(--success);font-size:1.1rem">+Rp 3.150.000</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ============================================================
+       14. WARNA & TEMA
+       ============================================================ -->
+  <div class="example-section" id="sec-colors">
+    <div class="example-section-header">
+      <h2><i class="bi bi-palette me-2"></i>14. Warna & CSS Variables</h2>
+      <p>Semua variabel warna yang bisa digunakan</p>
+    </div>
+    <div class="example-body">
+      <div class="row g-2">
+        <div class="col-6 col-md-3">
+          <div style="background:var(--primary);color:white;border-radius:10px;padding:12px;font-size:0.8rem;font-weight:600">
+            --primary<br><span style="opacity:0.75;font-weight:400">#1565C0</span>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div style="background:var(--accent);color:white;border-radius:10px;padding:12px;font-size:0.8rem;font-weight:600">
+            --accent<br><span style="opacity:0.75;font-weight:400">#2196F3</span>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div style="background:var(--success);color:white;border-radius:10px;padding:12px;font-size:0.8rem;font-weight:600">
+            --success<br><span style="opacity:0.75;font-weight:400">#2E7D32</span>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div style="background:var(--danger);color:white;border-radius:10px;padding:12px;font-size:0.8rem;font-weight:600">
+            --danger<br><span style="opacity:0.75;font-weight:400">#C62828</span>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div style="background:var(--warning);color:white;border-radius:10px;padding:12px;font-size:0.8rem;font-weight:600">
+            --warning<br><span style="opacity:0.75;font-weight:400">#F57F17</span>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div style="background:var(--primary-xlight);border:1px solid var(--border-color);color:var(--primary);border-radius:10px;padding:12px;font-size:0.8rem;font-weight:600">
+            --primary-xlight<br><span style="opacity:0.75;font-weight:400">#E3F2FD</span>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div style="background:var(--bg-card);border:1px solid var(--border-color);color:var(--text-primary);border-radius:10px;padding:12px;font-size:0.8rem;font-weight:600">
+            --bg-card<br><span style="color:var(--text-muted);font-weight:400">Surface Card</span>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div style="background:var(--bg-body);border:1px solid var(--border-color);color:var(--text-secondary);border-radius:10px;padding:12px;font-size:0.8rem;font-weight:600">
+            --bg-body<br><span style="color:var(--text-muted);font-weight:400">Background</span>
+          </div>
+        </div>
+      </div>
+      <div class="code-block"><span class="cmt">/* Gunakan CSS variable di mana saja */</span>
+color: var(--primary);
+background: var(--success-light);
+border-color: var(--border-color);
+box-shadow: var(--shadow);
+border-radius: var(--radius-lg);</div>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<!-- Contoh Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Contoh Modal Form</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label class="form-label">Nama</label>
+          <input type="text" class="form-control" placeholder="Nama lengkap">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Jumlah (Rp)</label>
+          <input type="number" class="form-control" placeholder="0">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Catatan</label>
+          <textarea class="form-control" rows="2"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        <button class="btn-add" data-bs-dismiss="modal"><i class="bi bi-check2 me-1"></i>Simpan</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div id="toast-container"></div>
+
+<!-- Loading Overlay -->
+<div id="loading-overlay" class="hidden">
+  <div class="loading-spinner">
+    <div class="spinner-ring"></div>
+    <p>Memproses...</p>
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+// ===== Fungsi minimal untuk demo example.html =====
+
+function toggleTheme() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  document.getElementById('theme-icon').className = isDark ? 'bi bi-moon-stars' : 'bi bi-sun-fill';
+  localStorage.setItem('tk_theme', isDark ? 'light' : 'dark');
+}
+
+function loadTheme() {
+  const t = localStorage.getItem('tk_theme') || 'light';
+  document.documentElement.setAttribute('data-theme', t);
+  document.getElementById('theme-icon').className = t === 'dark' ? 'bi bi-sun-fill' : 'bi bi-moon-stars';
+}
+
+function togglePwd(id, btn) {
+  const inp = document.getElementById(id);
+  const show = inp.type === 'text';
+  inp.type = show ? 'password' : 'text';
+  btn.querySelector('i').className = show ? 'bi bi-eye' : 'bi bi-eye-slash';
+}
+
+function showToast(msg, type = 'success') {
+  const icons  = { success: 'bi-check-circle-fill', error: 'bi-x-circle-fill', info: 'bi-info-circle-fill' };
+  const colors = { success: 'var(--success)', error: 'var(--danger)', info: 'var(--primary)' };
+  const el = document.createElement('div');
+  el.className = `toast-item ${type}`;
+  el.innerHTML = `<i class="bi ${icons[type]}" style="color:${colors[type]}"></i> ${msg}`;
+  document.getElementById('toast-container').appendChild(el);
+  setTimeout(() => el.remove(), 3100);
+}
+
+function showLoading(msg = 'Memproses...') {
+  const lo = document.getElementById('loading-overlay');
+  lo.querySelector('p').textContent = msg;
+  lo.classList.remove('hidden');
+}
+
+function hideLoading() {
+  setTimeout(() => document.getElementById('loading-overlay').classList.add('hidden'), 400);
+}
+
+// Demo grafik bar
+function buildExampleChart() {
+  const data = [
+    { label: 'Sep', inc: 60, exp: 40 },
+    { label: 'Okt', inc: 80, exp: 55 },
+    { label: 'Nov', inc: 50, exp: 70 },
+    { label: 'Des', inc: 100, exp: 60 },
+    { label: 'Jan', inc: 90, exp: 45 },
+    { label: 'Feb', inc: 75, exp: 50 },
+  ];
+  const maxVal = Math.max(...data.map(d => Math.max(d.inc, d.exp)));
+  document.getElementById('ex-chart').innerHTML = data.map(d => {
+    const ih = Math.round((d.inc / maxVal) * 110);
+    const eh = Math.round((d.exp / maxVal) * 110);
+    return `<div class="chart-bar-item">
+      <div style="display:flex;align-items:flex-end;gap:3px;height:120px">
+        <div class="chart-bar income-bar"  style="height:${ih}px;width:14px"></div>
+        <div class="chart-bar expense-bar" style="height:${eh}px;width:14px"></div>
+      </div>
+      <span class="chart-bar-label">${d.label}</span>
+    </div>`;
+  }).join('');
+}
+
+loadTheme();
+buildExampleChart();
+</script>
 </body>
-
 </html>
