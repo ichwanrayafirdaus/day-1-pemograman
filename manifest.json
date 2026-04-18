@@ -2,78 +2,75 @@
   "name": "TOKO KITA",
   "short_name": "TOKO KITA",
   "description": "Aplikasi Manajemen Keuangan UMKM — Catat pemasukan, pengeluaran, dan utang pelanggan dengan mudah.",
-  "start_url": "./index.html",
-  "scope": "./",
+  "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "orientation": "any",
-  "background_color": "#ffffff",
+  "background_color": "#1565C0",
   "theme_color": "#1565C0",
-  "lang": "id",
+  "lang": "id-ID",
+  "dir": "ltr",
   "categories": ["finance", "business", "productivity"],
   "icons": [
     {
-      "src": "./icons/icon-72.png",
+      "src": "icons/icon-72.png",
       "sizes": "72x72",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./icons/icon-96.png",
+      "src": "icons/icon-96.png",
       "sizes": "96x96",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./icons/icon-128.png",
+      "src": "icons/icon-128.png",
       "sizes": "128x128",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./icons/icon-144.png",
+      "src": "icons/icon-144.png",
       "sizes": "144x144",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./icons/icon-152.png",
+      "src": "icons/icon-152.png",
       "sizes": "152x152",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./icons/icon-192.png",
+      "src": "icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
-      "src": "./icons/icon-384.png",
+      "src": "icons/icon-192-maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icons/icon-384.png",
       "sizes": "384x384",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./icons/icon-512.png",
+      "src": "icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "./icons/screenshot-mobile.png",
-      "sizes": "390x844",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "Dashboard TOKO KITA di Mobile"
+      "purpose": "any"
     },
     {
-      "src": "./icons/screenshot-desktop.png",
-      "sizes": "1280x720",
+      "src": "icons/icon-512-maskable.png",
+      "sizes": "512x512",
       "type": "image/png",
-      "form_factor": "wide",
-      "label": "Dashboard TOKO KITA di Desktop"
+      "purpose": "maskable"
     }
   ],
   "shortcuts": [
@@ -81,24 +78,23 @@
       "name": "Tambah Pemasukan",
       "short_name": "Pemasukan",
       "description": "Catat pemasukan baru",
-      "url": "./index.html#transaksi",
-      "icons": [{ "src": "./icons/icon-96.png", "sizes": "96x96" }]
+      "url": "/",
+      "icons": [{ "src": "icons/icon-96.png", "sizes": "96x96", "type": "image/png" }]
     },
     {
       "name": "Tambah Pengeluaran",
       "short_name": "Pengeluaran",
       "description": "Catat pengeluaran baru",
-      "url": "./index.html#transaksi",
-      "icons": [{ "src": "./icons/icon-96.png", "sizes": "96x96" }]
+      "url": "/",
+      "icons": [{ "src": "icons/icon-96.png", "sizes": "96x96", "type": "image/png" }]
     },
     {
       "name": "Laporan Keuangan",
       "short_name": "Laporan",
       "description": "Lihat laporan laba rugi",
-      "url": "./index.html#laporan",
-      "icons": [{ "src": "./icons/icon-96.png", "sizes": "96x96" }]
+      "url": "/",
+      "icons": [{ "src": "icons/icon-96.png", "sizes": "96x96", "type": "image/png" }]
     }
   ],
-  "related_applications": [],
   "prefer_related_applications": false
 }
