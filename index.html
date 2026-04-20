@@ -1368,72 +1368,125 @@ function renderReport() {
   listEl.innerHTML=trxs.map(t=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border-color)"><div><div style="font-weight:500;font-size:.875rem">${t.desc}</div><div style="font-size:.75rem;color:var(--text-muted)">${fmtDate(t.date)} · ${t.category||'Umum'}</div></div><div style="font-weight:700;font-size:.875rem;color:${t.type==='income'?'var(--success)':'var(--danger)'}">${t.type==='income'?'+':'-'}${fmt(t.amount)}</div></div>`).join('');
 }
 
-/* ── SERVICE WORKER (Blob URL — tidak butuh file eksternal) ── */
+/* ── SERVICE WORKER REGISTRATION (Full PWA Features) ── */
 function registerSW() {
   if (!('serviceWorker' in navigator)) return;
 
-  const swCode = `
-const CACHE = 'tokokita-v2';
-const OFFLINE = '/index.html';
-const ASSETS  = ['/', '/index.html', '/manifest.json',
-  '/icons/icon-192.png', '/icons/icon-512.png'];
+  // Daftarkan service-worker.js dari file (GitHub Pages)
+  navigator.serviceWorker.register('/day-1-pemograman/service-worker.js', { scope: '/day-1-pemograman/' })
+    .then(async reg => {
+      console.log('[TOKO KITA] SW registered:', reg.scope);
+
+      // Update check
+      reg.addEventListener('updatefound', () => {
+        const nw = reg.installing;
+        nw.addEventListener('statechange', () => {
+          if (nw.state === 'installed' && navigator.serviceWorker.controller) {
+            showToast('Update tersedia! Refresh untuk memperbarui.', 'info');
+          }
+        });
+      });
+
+      // ── BACKGROUND SYNC ──
+      if ('sync' in reg) {
+        navigator.serviceWorker.ready.then(r => {
+          window.addEventListener('online', () => {
+            r.sync.register('sync-transactions').catch(() => {});
+            r.sync.register('sync-debts').catch(() => {});
+            showToast('Koneksi pulih — data disinkronisasi.', 'success');
+          });
+        });
+      }
+
+      // ── PERIODIC BACKGROUND SYNC ──
+      if ('periodicSync' in reg) {
+        try {
+          const status = await navigator.permissions.query({ name: 'periodic-background-sync' });
+          if (status.state === 'granted') {
+            await reg.periodicSync.register('update-financial-data', {
+              minInterval: 24 * 60 * 60 * 1000 // 1x sehari
+            });
+            console.log('[TOKO KITA] Periodic Sync registered');
+          }
+        } catch (e) {
+          console.log('[TOKO KITA] Periodic Sync not supported:', e);
+        }
+      }
+
+      // ── PUSH NOTIFICATIONS ──
+      if ('Notification' in window && 'PushManager' in window) {
+        // Simpan function global agar bisa dipanggil dari UI
+        window.requestPushPermission = async function() {
+          const permission = await Notification.requestPermission();
+          if (permission === 'granted') {
+            console.log('[TOKO KITA] Push permission granted');
+            showToast('Notifikasi diaktifkan!', 'success');
+            return true;
+          } else {
+            showToast('Notifikasi tidak diizinkan.', 'info');
+            return false;
+          }
+        };
+      }
+
+      // ── TERIMA PESAN DARI SW ──
+      navigator.serviceWorker.addEventListener('message', e => {
+        if (e.data && e.data.type === 'SYNC_COMPLETE') {
+          showToast('Data berhasil disinkronisasi.', 'success');
+        }
+        if (e.data && e.data.type === 'PERIODIC_SYNC') {
+          console.log('[TOKO KITA] Periodic sync at:', new Date(e.data.timestamp).toLocaleString('id-ID'));
+        }
+      });
+    })
+    .catch(err => {
+      console.warn('[TOKO KITA] SW registration failed:', err);
+      // Fallback via Blob URL
+      try {
+        const swCode = `
+const CACHE = 'tokokita-v3';
+const OFFLINE = '/day-1-pemograman/offline.html';
+const ASSETS = ['/day-1-pemograman/', '/day-1-pemograman/index.html', '/day-1-pemograman/offline.html',
+  '/day-1-pemograman/manifest.json', '/day-1-pemograman/icons/icon-192.png', '/day-1-pemograman/icons/icon-512.png'];
 
 self.addEventListener('install', e => {
-  e.waitUntil(
-    caches.open(CACHE).then(c =>
-      Promise.allSettled(ASSETS.map(u => c.add(u).catch(()=>{})))
-    ).then(() => self.skipWaiting())
-  );
+  e.waitUntil(caches.open(CACHE).then(c => Promise.allSettled(ASSETS.map(u => c.add(u).catch(()=>{})))).then(() => self.skipWaiting()));
 });
-
 self.addEventListener('activate', e => {
-  e.waitUntil(
-    caches.keys()
-      .then(keys => Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k))))
-      .then(() => self.clients.claim())
-  );
+  e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(() => self.clients.claim()));
 });
-
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
   if (!e.request.url.startsWith('http')) return;
-  e.respondWith(
-    caches.match(e.request).then(cached => {
-      if (cached) return cached;
-      return fetch(e.request).then(res => {
-        if (res && res.status === 200 && res.type !== 'opaque') {
-          caches.open(CACHE).then(c => c.put(e.request, res.clone()));
-        }
-        return res;
-      }).catch(() => caches.match(OFFLINE));
-    })
-  );
-});
-`;
-
-  try {
-    const blob = new Blob([swCode], { type: 'text/javascript' });
-    const url  = URL.createObjectURL(blob);
-    navigator.serviceWorker.register(url)
-      .then(reg => {
-        console.log('[TOKO KITA] SW registered via Blob');
-        reg.addEventListener('updatefound', () => {
-          const nw = reg.installing;
-          nw.addEventListener('statechange', () => {
-            if (nw.state === 'installed' && navigator.serviceWorker.controller) {
-              showToast('Update tersedia! Refresh untuk memperbarui.', 'info');
-            }
-          });
-        });
-      })
-      .catch(err => console.warn('[TOKO KITA] SW Blob failed, trying file...', err));
-  } catch (e) {
-    // Fallback: coba file langsung (untuk GitHub Pages)
-    navigator.serviceWorker.register('service-worker.js')
-      .then(() => console.log('[TOKO KITA] SW registered via file'))
-      .catch(err => console.warn('[TOKO KITA] SW failed:', err));
+  if (e.request.mode === 'navigate') {
+    e.respondWith(fetch(e.request).catch(() => caches.match(OFFLINE)));
+    return;
   }
+  e.respondWith(caches.match(e.request).then(cached => {
+    if (cached) return cached;
+    return fetch(e.request).then(res => {
+      if (res && res.status === 200 && res.type !== 'opaque') caches.open(CACHE).then(c => c.put(e.request, res.clone()));
+      return res;
+    }).catch(() => caches.match(OFFLINE));
+  }));
+});
+self.addEventListener('sync', e => { if (e.tag === 'sync-transactions') console.log('[SW] BG Sync: transactions'); });
+self.addEventListener('push', e => {
+  e.waitUntil(self.registration.showNotification('TOKO KITA', { body: e.data ? e.data.text() : 'Ada update!', icon: '/day-1-pemograman/icons/icon-192.png' }));
+});
+self.addEventListener('notificationclick', e => { e.notification.close(); e.waitUntil(clients.openWindow('/day-1-pemograman/')); });
+`;
+        const blob = new Blob([swCode], { type: 'text/javascript' });
+        const url = URL.createObjectURL(blob);
+        navigator.serviceWorker.register(url)
+          .then(() => console.log('[TOKO KITA] SW registered via Blob'))
+          .catch(e2 => console.warn('[TOKO KITA] SW Blob also failed:', e2));
+      } catch (e3) {
+        console.warn('[TOKO KITA] SW completely failed:', e3);
+      }
+    });
 }
+
 
 /* ── INIT ── */
 window.addEventListener('load', () => {

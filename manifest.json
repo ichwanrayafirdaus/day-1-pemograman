@@ -119,5 +119,24 @@
       ]
     }
   ],
+  "launch_handler": {
+    "client_mode": "focus-existing"
+  },
+  "share_target": {
+    "action": "/day-1-pemograman/index.html",
+    "method": "GET",
+    "enctype": "application/x-www-form-urlencoded",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  },
+  "protocol_handlers": [
+    {
+      "protocol": "web+tokokita",
+      "url": "/day-1-pemograman/index.html?action=%s"
+    }
+  ],
   "prefer_related_applications": false
 }
