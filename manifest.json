@@ -2,8 +2,8 @@
   "name": "TOKO KITA",
   "short_name": "TOKO KITA",
   "description": "Aplikasi Manajemen Keuangan UMKM — Catat pemasukan, pengeluaran, dan utang pelanggan dengan mudah.",
-  "start_url": "/",
-  "scope": "/",
+  "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
   "orientation": "any",
   "background_color": "#1565C0",
@@ -78,21 +78,21 @@
       "name": "Tambah Pemasukan",
       "short_name": "Pemasukan",
       "description": "Catat pemasukan baru",
-      "url": "/",
+      "url": "./index.html#add-pemasukan",
       "icons": [{ "src": "icons/icon-96.png", "sizes": "96x96", "type": "image/png" }]
     },
     {
       "name": "Tambah Pengeluaran",
       "short_name": "Pengeluaran",
       "description": "Catat pengeluaran baru",
-      "url": "/",
+      "url": "./index.html#add-pengeluaran",
       "icons": [{ "src": "icons/icon-96.png", "sizes": "96x96", "type": "image/png" }]
     },
     {
       "name": "Laporan Keuangan",
       "short_name": "Laporan",
       "description": "Lihat laporan laba rugi",
-      "url": "/",
+      "url": "./index.html#laporan",
       "icons": [{ "src": "icons/icon-96.png", "sizes": "96x96", "type": "image/png" }]
     }
   ],
