@@ -6,11 +6,18 @@
   "start_url": "/day-1-pemograman/index.html",
   "scope": "/day-1-pemograman/",
   "display": "standalone",
+  "display_override": [
+    "window-controls-overlay",
+    "standalone",
+    "minimal-ui",
+    "browser"
+  ],
   "orientation": "any",
   "background_color": "#1565C0",
   "theme_color": "#1565C0",
   "lang": "id-ID",
   "dir": "ltr",
+  "iarc_rating_id": "e84b072d-71b3-4d3e-86ae-31a8ce4e53b7",
   "categories": [
     "finance",
     "business",
@@ -78,6 +85,22 @@
       "purpose": "maskable"
     }
   ],
+  "screenshots": [
+    {
+      "src": "icons/screenshot-mobile.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Dashboard TOKO KITA — Tampilan Mobile"
+    },
+    {
+      "src": "icons/screenshot-desktop.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Dashboard TOKO KITA — Tampilan Desktop"
+    }
+  ],
   "shortcuts": [
     {
       "name": "Tambah Pemasukan",
@@ -122,6 +145,10 @@
   "launch_handler": {
     "client_mode": "focus-existing"
   },
+  "handle_links": "preferred",
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
   "share_target": {
     "action": "/day-1-pemograman/index.html",
     "method": "GET",
@@ -136,6 +163,23 @@
     {
       "protocol": "web+tokokita",
       "url": "/day-1-pemograman/index.html?action=%s"
+    }
+  ],
+  "file_handlers": [
+    {
+      "action": "/day-1-pemograman/index.html",
+      "accept": {
+        "text/csv": [".csv"],
+        "application/json": [".json"]
+      },
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ],
+      "launch_type": "single-client"
     }
   ],
   "prefer_related_applications": false
