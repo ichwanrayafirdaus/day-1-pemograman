@@ -2,22 +2,21 @@
   "name": "TOKO KITA",
   "short_name": "TOKO KITA",
   "description": "Aplikasi Manajemen Keuangan UMKM — Catat pemasukan, pengeluaran, dan utang pelanggan dengan mudah.",
-  "start_url": "./index.html",
-  "scope": "./",
+  "id": "/day-1-pemograman/",
+  "start_url": "/day-1-pemograman/index.html",
+  "scope": "/day-1-pemograman/",
   "display": "standalone",
   "orientation": "any",
   "background_color": "#1565C0",
   "theme_color": "#1565C0",
   "lang": "id-ID",
   "dir": "ltr",
-  "categories": ["finance", "business", "productivity"],
+  "categories": [
+    "finance",
+    "business",
+    "productivity"
+  ],
   "icons": [
-    {
-      "src": "icons/icon-72.png",
-      "sizes": "72x72",
-      "type": "image/png",
-      "purpose": "any"
-    },
     {
       "src": "icons/icon-96.png",
       "sizes": "96x96",
@@ -61,6 +60,12 @@
       "purpose": "any"
     },
     {
+      "src": "icons/icon-384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
       "src": "icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
@@ -78,22 +83,40 @@
       "name": "Tambah Pemasukan",
       "short_name": "Pemasukan",
       "description": "Catat pemasukan baru",
-      "url": "./index.html#add-pemasukan",
-      "icons": [{ "src": "icons/icon-96.png", "sizes": "96x96", "type": "image/png" }]
+      "url": "/day-1-pemograman/index.html#add-pemasukan",
+      "icons": [
+        {
+          "src": "icons/icon-96.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
     },
     {
       "name": "Tambah Pengeluaran",
       "short_name": "Pengeluaran",
       "description": "Catat pengeluaran baru",
-      "url": "./index.html#add-pengeluaran",
-      "icons": [{ "src": "icons/icon-96.png", "sizes": "96x96", "type": "image/png" }]
+      "url": "/day-1-pemograman/index.html#add-pengeluaran",
+      "icons": [
+        {
+          "src": "icons/icon-96.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
     },
     {
       "name": "Laporan Keuangan",
       "short_name": "Laporan",
       "description": "Lihat laporan laba rugi",
-      "url": "./index.html#laporan",
-      "icons": [{ "src": "icons/icon-96.png", "sizes": "96x96", "type": "image/png" }]
+      "url": "/day-1-pemograman/index.html#laporan",
+      "icons": [
+        {
+          "src": "icons/icon-96.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
     }
   ],
   "prefer_related_applications": false
