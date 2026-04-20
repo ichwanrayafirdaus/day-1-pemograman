@@ -699,19 +699,133 @@ table.tk-table tbody tr:last-child td { border-bottom: none; }
    RESPONSIVE — MOBILE
    ============================================================ */
 @media (max-width: 768px) {
+  /* Sidebar — sembunyikan, hanya muncul jika dibuka manual */
   .sidebar { transform: translateX(-260px); }
   .sidebar.open { transform: translateX(0); }
-  .main-content { margin-left: 0; }
-  .page-content { padding: 1rem; }
-  .stat-value { font-size: 1.2rem; }
-  .filter-bar { flex-direction: column; align-items: stretch; }
-  .quick-btn { min-width: 120px; }
+
+  /* Main content — full width, beri ruang bottom nav */
+  .main-content { margin-left: 0; padding-bottom: 72px; }
+  .page-content { padding: 0.875rem; }
+
+  /* Top bar mobile */
+  .top-bar { padding: 0.75rem 1rem; }
+  .page-title { font-size: 1rem; }
+
+  /* Stat cards — 2 kolom */
+  .stat-card { padding: 1rem 0.875rem; }
+  .stat-value { font-size: 1.15rem; }
+  .stat-icon { width: 40px; height: 40px; font-size: 1.1rem; margin-bottom: 0.75rem; }
+  .stat-label { font-size: 0.72rem; }
+
+  /* Card header — stack vertikal */
+  .card-header-custom { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .card-header-custom h5 { font-size: 0.9rem; }
+
+  /* Filter bar — vertikal */
+  .filter-bar { flex-direction: column; align-items: stretch; padding: 0.75rem 1rem; gap: 8px; }
+  .filter-select, .filter-input { width: 100%; font-size: 0.875rem; padding: 8px 12px; }
+
+  /* Quick action buttons — 2 kolom */
+  .quick-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .quick-btn { min-width: unset; padding: 0.875rem 0.5rem; }
+  .quick-btn i { font-size: 1.5rem; }
+  .quick-btn span { font-size: 0.78rem; }
+
+  /* Table — horizontal scroll */
+  .table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table.tk-table { font-size: 0.8rem; min-width: 500px; }
+  table.tk-table thead th { padding: 8px 10px; }
+  table.tk-table tbody td { padding: 10px; }
+
+  /* Chart lebih tinggi */
+  .chart-bar-wrap { height: 120px; }
+
+  /* Report summary */
+  .report-summary { padding: 1.25rem; }
+  .report-summary-value { font-size: 1.75rem; }
+
+  /* Modal — full screen di mobile */
+  .modal-dialog { margin: 0; max-width: 100%; }
+  .modal-content { border-radius: 20px 20px 0 0; position: fixed; bottom: 0; left: 0; right: 0; }
+  .modal-body { max-height: 70vh; overflow-y: auto; }
+
+  /* Bottom nav tampil */
+  .mobile-bottom-nav { display: flex !important; }
+
+  /* Sembunyikan hamburger di mobile — navigasi via bottom nav */
+  .btn-toggle { display: flex; }
 }
 
 @media (max-width: 480px) {
   .auth-card { padding: 1.75rem 1.25rem; }
-  .stat-card { padding: 1rem; }
-  .card-header-custom { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .stat-card { padding: 0.875rem; }
+  .page-content { padding: 0.75rem; }
+  .quick-btn span { font-size: 0.72rem; }
+}
+
+/* ============================================================
+   MOBILE BOTTOM NAVIGATION
+   ============================================================ */
+.mobile-bottom-nav {
+  display: none; /* default hidden, muncul di mobile via media query */
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 64px;
+  background: var(--bg-card);
+  border-top: 1px solid var(--border-color);
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+  z-index: 1001;
+  padding: 0 0.5rem;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.mobile-nav-item {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 3px; flex: 1; padding: 8px 4px;
+  border: none; background: none; cursor: pointer;
+  color: var(--text-muted); transition: var(--transition);
+  border-radius: 12px; min-height: 52px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-nav-item i {
+  font-size: 1.35rem;
+  transition: var(--transition);
+}
+
+.mobile-nav-item span {
+  font-size: 0.65rem; font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.mobile-nav-item.active {
+  color: var(--primary);
+}
+
+.mobile-nav-item.active i {
+  transform: scale(1.15);
+}
+
+.mobile-nav-fab {
+  width: 52px; height: 52px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-size: 1.5rem;
+  box-shadow: 0 4px 16px rgba(21,101,192,0.40);
+  transition: var(--transition);
+  margin-bottom: 8px;
+  -webkit-tap-highlight-color: transparent;
+  flex-shrink: 0;
+}
+
+.mobile-nav-fab:active { transform: scale(0.93); }
+
+[data-theme="dark"] .mobile-bottom-nav {
+  background: #0D2137;
+  border-top-color: #1A3A5C;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.3);
 }
 
 </style>
@@ -930,6 +1044,30 @@ table.tk-table tbody tr:last-child td { border-bottom: none; }
 
     </main>
   </div>
+
+  <!-- MOBILE BOTTOM NAVIGATION -->
+  <nav class="mobile-bottom-nav" id="mobile-bottom-nav">
+    <button class="mobile-nav-item active" id="mob-nav-dashboard" onclick="navigate('dashboard')">
+      <i class="bi bi-speedometer2"></i>
+      <span>Beranda</span>
+    </button>
+    <button class="mobile-nav-item" id="mob-nav-transaksi" onclick="navigate('transaksi')">
+      <i class="bi bi-arrow-left-right"></i>
+      <span>Transaksi</span>
+    </button>
+    <button class="mobile-nav-fab" onclick="openTrxModal('income')" title="Tambah Transaksi">
+      <i class="bi bi-plus-lg"></i>
+    </button>
+    <button class="mobile-nav-item" id="mob-nav-utang" onclick="navigate('utang')">
+      <i class="bi bi-people"></i>
+      <span>Utang</span>
+    </button>
+    <button class="mobile-nav-item" id="mob-nav-laporan" onclick="navigate('laporan')">
+      <i class="bi bi-bar-chart-line"></i>
+      <span>Laporan</span>
+    </button>
+  </nav>
+
 </div>
 
 <!-- MODAL TRANSAKSI -->
@@ -1135,6 +1273,11 @@ function navigate(page) {
   document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.getAttribute('data-page')===page));
   document.getElementById('page-title').textContent = pageTitles[page];
   closeSidebar();
+  // ── Sync mobile bottom nav active state ──
+  document.querySelectorAll('.mobile-nav-item').forEach(n => {
+    const id = n.id; // e.g. "mob-nav-dashboard"
+    n.classList.toggle('active', id === 'mob-nav-' + page);
+  });
   if (page==='dashboard') updateDashboard();
   if (page==='laporan')   renderReport();
 }
