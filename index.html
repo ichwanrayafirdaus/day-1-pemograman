@@ -890,6 +890,13 @@ table.tk-table tbody tr:last-child td { border-bottom: none; }
         <input type="email" class="form-control" id="reg-email" placeholder="nama@email.com">
       </div>
       <div class="mb-3">
+        <label class="form-label">Nama Toko <small style="color:var(--text-muted)">(opsional)</small></label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-shop"></i></span>
+          <input type="text" class="form-control" id="reg-store" placeholder="Contoh: Warung Bu Siti, Toko Makmur">
+        </div>
+      </div>
+      <div class="mb-3">
         <label class="form-label">Password</label>
         <div class="input-group">
           <input type="password" class="form-control" id="reg-password" placeholder="Min. 6 karakter">
@@ -900,7 +907,7 @@ table.tk-table tbody tr:last-child td { border-bottom: none; }
         <label class="form-label">Konfirmasi Password</label>
         <input type="password" class="form-control" id="reg-confirm" placeholder="Ulangi password">
       </div>
-      <button class="btn-primary-custom" onclick="doRegister()"><i class="bi bi-person-plus"></i> Daftar Sekarang</button>
+      <button class="btn-primary-custom" onclick="doRegister()"><i class="bi bi-shop"></i> Daftar Sekarang</button>
       <p style="text-align:center;margin-top:1rem;font-size:.825rem;color:var(--text-secondary)">
         Sudah punya akun? <span style="color:var(--primary);cursor:pointer;font-weight:600" onclick="switchAuthTab('login')">Masuk di sini</span>
       </p>
@@ -916,7 +923,7 @@ table.tk-table tbody tr:last-child td { border-bottom: none; }
     <div class="sidebar-header">
       <div class="sidebar-brand">
         <div class="brand-icon"><i class="bi bi-shop" style="color:white"></i></div>
-        <span>TOKO KITA</span>
+        <span id="sidebar-store-name">TOKO KITA</span>
       </div>
     </div>
     <div class="sidebar-user">
@@ -925,6 +932,9 @@ table.tk-table tbody tr:last-child td { border-bottom: none; }
         <div class="user-name" id="sidebar-name">Pengguna</div>
         <div class="user-email" id="sidebar-email">-</div>
       </div>
+      <button class="btn-toggle" onclick="openStoreSettings()" title="Pengaturan Toko" style="color:rgba(255,255,255,0.6);border-color:rgba(255,255,255,0.2)">
+        <i class="bi bi-gear"></i>
+      </button>
     </div>
     <div class="nav-section">
       <div class="nav-section-title">Menu Utama</div>
@@ -1108,6 +1118,50 @@ table.tk-table tbody tr:last-child td { border-bottom: none; }
   </div>
 </div>
 
+<!-- MODAL PENGATURAN TOKO -->
+<div class="modal fade" id="storeSettingsModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-shop me-2"></i>Pengaturan Toko</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Nama Toko</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-shop"></i></span>
+            <input type="text" class="form-control" id="settings-store-name" placeholder="Nama toko Anda" maxlength="40">
+          </div>
+          <small class="text-muted">Nama ini tampil di sidebar dan header aplikasi.</small>
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Nama Pemilik</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-person"></i></span>
+            <input type="text" class="form-control" id="settings-owner-name" placeholder="Nama Anda" maxlength="40">
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Nomor WhatsApp Toko</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-whatsapp"></i></span>
+            <input type="text" class="form-control" id="settings-store-phone" placeholder="628xxxx" maxlength="20">
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Alamat Toko</label>
+          <textarea class="form-control" id="settings-store-address" rows="2" placeholder="Alamat lengkap toko" maxlength="100"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        <button class="btn-add" onclick="saveStoreSettings()"><i class="bi bi-check2 me-1"></i>Simpan</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 /* ============================================================
@@ -1198,10 +1252,11 @@ function doLogin() {
 }
 
 function doRegister() {
-  const name    = document.getElementById('reg-name').value.trim();
-  const email   = document.getElementById('reg-email').value.trim();
-  const pwd     = document.getElementById('reg-password').value;
-  const confirm = document.getElementById('reg-confirm').value;
+  const name      = document.getElementById('reg-name').value.trim();
+  const email     = document.getElementById('reg-email').value.trim();
+  const storeName = document.getElementById('reg-store').value.trim();
+  const pwd       = document.getElementById('reg-password').value;
+  const confirm   = document.getElementById('reg-confirm').value;
   if (!name)                                  { showToast('Nama tidak boleh kosong!','error'); return; }
   if (!email || !/\S+@\S+\.\S+/.test(email)) { showToast('Email tidak valid!','error'); return; }
   if (pwd.length < 6)                         { showToast('Password minimal 6 karakter!','error'); return; }
@@ -1210,7 +1265,11 @@ function doRegister() {
   if (users.find(u => u.email===email))       { showToast('Email sudah terdaftar!','error'); return; }
   showLoading('Membuat akun...');
   setTimeout(() => {
-    users.push({ id:uuid(), name, email, password:hashPwd(pwd) });
+    users.push({
+      id: uuid(), name, email, password: hashPwd(pwd),
+      storeName: storeName || name + '\'s Store',
+      storePhone: '', storeAddress: ''
+    });
     saveUsers(users); hideLoading();
     showToast('Akun berhasil dibuat! Silakan masuk.','info');
     switchAuthTab('login');
@@ -1232,12 +1291,59 @@ function enterApp() {
   document.getElementById('auth-screen').style.display = 'none';
   document.getElementById('app-screen').style.display  = 'block';
   const av = currentUser.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
-  document.getElementById('sidebar-avatar').textContent = av;
-  document.getElementById('sidebar-name').textContent   = currentUser.name;
-  document.getElementById('sidebar-email').textContent  = currentUser.email;
+  document.getElementById('sidebar-avatar').textContent     = av;
+  document.getElementById('sidebar-name').textContent       = currentUser.name;
+  document.getElementById('sidebar-email').textContent      = currentUser.email;
+  // Tampilkan nama toko
+  const storeName = currentUser.storeName || 'TOKO KITA';
+  document.getElementById('sidebar-store-name').textContent = storeName;
+  document.getElementById('page-title').textContent         = 'Dashboard';
+  document.title = storeName + ' — Keuangan UMKM';
   document.getElementById('trx-filter-month').value    = nowMonth();
   document.getElementById('report-filter-month').value = nowMonth();
   updateDashboard(); renderTrxTable(); renderDebtTable(); renderReport();
+}
+
+/* ── STORE SETTINGS ── */
+let storeSettingsModal;
+function openStoreSettings() {
+  storeSettingsModal = storeSettingsModal || new bootstrap.Modal(document.getElementById('storeSettingsModal'));
+  document.getElementById('settings-store-name').value    = currentUser.storeName    || '';
+  document.getElementById('settings-owner-name').value   = currentUser.name         || '';
+  document.getElementById('settings-store-phone').value  = currentUser.storePhone   || '';
+  document.getElementById('settings-store-address').value= currentUser.storeAddress || '';
+  closeSidebar();
+  storeSettingsModal.show();
+}
+function saveStoreSettings() {
+  const storeName    = document.getElementById('settings-store-name').value.trim();
+  const ownerName    = document.getElementById('settings-owner-name').value.trim();
+  const storePhone   = document.getElementById('settings-store-phone').value.trim();
+  const storeAddress = document.getElementById('settings-store-address').value.trim();
+  if (!storeName) { showToast('Nama toko tidak boleh kosong!','error'); return; }
+  // Update user data
+  const users = loadUsers();
+  const idx   = users.findIndex(u => u.id === currentUser.id);
+  if (idx > -1) {
+    users[idx].storeName    = storeName;
+    users[idx].name         = ownerName  || users[idx].name;
+    users[idx].storePhone   = storePhone;
+    users[idx].storeAddress = storeAddress;
+    saveUsers(users);
+    currentUser = users[idx];
+    // Simpan session
+    const session = JSON.parse(localStorage.getItem('tk_session') || sessionStorage.getItem('tk_session') || 'null');
+    if (session) {
+      const updated = { ...session, storeName, name: ownerName || session.name, storePhone, storeAddress };
+      localStorage.setItem('tk_session', JSON.stringify(updated));
+    }
+  }
+  // Update UI langsung
+  document.getElementById('sidebar-store-name').textContent = storeName;
+  document.getElementById('sidebar-name').textContent       = ownerName || currentUser.name;
+  document.title = storeName + ' — Keuangan UMKM';
+  storeSettingsModal.hide();
+  showToast(`Pengaturan "${storeName}" tersimpan! 🏪`);
 }
 
 /* ── THEME ── */
