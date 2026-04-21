@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="description" content="TOKO KITA — Aplikasi Manajemen Keuangan UMKM">
 <meta name="theme-color" content="#1565C0">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -828,6 +828,52 @@ table.tk-table tbody tr:last-child td { border-bottom: none; }
   box-shadow: 0 -4px 20px rgba(0,0,0,0.3);
 }
 
+/* ============================================================
+   COPYRIGHT FOOTER
+   ============================================================ */
+.copyright-footer {
+  text-align: center;
+  padding: 1.5rem 1rem;
+  margin-top: 2rem;
+  border-top: 1px solid var(--border-color);
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+.copyright-footer .copyright-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 700;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+.copyright-footer span {
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+/* Mobile logout nav item */
+.mobile-nav-item.logout-item {
+  color: rgba(255,100,100,0.85);
+}
+.mobile-nav-item.logout-item.active,
+.mobile-nav-item.logout-item:hover {
+  color: #FF6B6B;
+}
+
+@media (max-width: 768px) {
+  .copyright-footer {
+    padding-bottom: 80px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1052,6 +1098,12 @@ table.tk-table tbody tr:last-child td { border-bottom: none; }
         </div>
       </div>
 
+      <!-- COPYRIGHT FOOTER -->
+      <footer class="copyright-footer" id="copyright-footer">
+        <span class="copyright-icon">©</span>
+        <span>ichwanrayafirdaus</span>
+      </footer>
+
     </main>
   </div>
 
@@ -1075,6 +1127,10 @@ table.tk-table tbody tr:last-child td { border-bottom: none; }
     <button class="mobile-nav-item" id="mob-nav-laporan" onclick="navigate('laporan')">
       <i class="bi bi-bar-chart-line"></i>
       <span>Laporan</span>
+    </button>
+    <button class="mobile-nav-item logout-item" id="mob-nav-logout" onclick="doLogout()">
+      <i class="bi bi-box-arrow-left"></i>
+      <span>Keluar</span>
     </button>
   </nav>
 
