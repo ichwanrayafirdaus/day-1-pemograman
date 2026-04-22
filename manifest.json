@@ -204,9 +204,9 @@
       "short_name": "Keuangan",
       "description": "Lihat ringkasan pemasukan, pengeluaran, dan laba bersih usaha Anda.",
       "tag": "tokokita-summary",
-      "template": "widgets/template.json",
-      "ms_ac_template": "widgets/template.json",
-      "data": "widgets/data.json",
+      "template": "tokokita-summary",
+      "ms_ac_template": "https://ichwanrayafirdaus.github.io/day-1-pemograman/widgets/template.json",
+      "data": "https://ichwanrayafirdaus.github.io/day-1-pemograman/widgets/data.json",
       "type": "application/json",
       "screenshots": [
         {
