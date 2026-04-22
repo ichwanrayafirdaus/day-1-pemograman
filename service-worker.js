@@ -43,8 +43,25 @@ self.addEventListener('activate', e => {
         })
       ))
       .then(() => self.clients.claim())
+      .then(() => updateAllWidgets())
   );
 });
+
+// Update semua widget yang sudah terinstall saat SW diaktifkan
+async function updateAllWidgets() {
+  if (!('widgets' in self)) return;
+  try {
+    const widget = await self.widgets.getByTag('tokokita-summary');
+    if (widget) {
+      const template = await (await fetch(widget.definition.msAcTemplate)).text();
+      const data = await (await fetch(widget.definition.data)).text();
+      await self.widgets.updateByTag(widget.definition.tag, { template, data });
+      console.log('[SW] Widgets updated on activate');
+    }
+  } catch (err) {
+    console.log('[SW] No widgets to update:', err.message);
+  }
+}
 
 /* ══════════════════════════════════════════════════
    FETCH — Network First, Cache Fallback + Offline
@@ -129,6 +146,16 @@ self.addEventListener('periodicsync', e => {
   if (e.tag === 'update-financial-data') {
     e.waitUntil(periodicSyncData());
   }
+
+  // Handle widget periodic sync update
+  if (e.tag === 'tokokita-summary' && 'widgets' in self) {
+    e.waitUntil((async () => {
+      const widget = await self.widgets.getByTag(e.tag);
+      if (widget && 'update' in widget.definition) {
+        await renderWidget(widget);
+      }
+    })());
+  }
 });
 
 async function periodicSyncData() {
@@ -211,6 +238,71 @@ self.addEventListener('notificationclick', e => {
       }
     })
   );
+});
+
+/* ══════════════════════════════════════════════════
+   WIDGETS — Windows 11 Widgets Board Support
+══════════════════════════════════════════════════ */
+
+// Helper: Render widget dengan template dan data
+async function renderWidget(widget) {
+  try {
+    const templateUrl = widget.definition.msAcTemplate;
+    const dataUrl = widget.definition.data;
+    const template = await (await fetch(templateUrl)).text();
+    const data = await (await fetch(dataUrl)).text();
+    await self.widgets.updateByTag(widget.definition.tag, { template, data });
+    console.log('[SW] Widget rendered:', widget.definition.tag);
+  } catch (err) {
+    console.error('[SW] Widget render failed:', err);
+  }
+}
+
+// Widget installed by user
+self.addEventListener('widgetinstall', e => {
+  console.log('[SW] Widget installed:', e.widget.definition.tag);
+  e.waitUntil((async () => {
+    await renderWidget(e.widget);
+    // Register periodic sync for widget updates
+    if ('periodicSync' in self.registration) {
+      const tags = await self.registration.periodicSync.getTags();
+      if (!tags.includes(e.widget.definition.tag)) {
+        await self.registration.periodicSync.register(e.widget.definition.tag, {
+          minInterval: e.widget.definition.update || 900
+        });
+      }
+    }
+  })());
+});
+
+// Widget uninstalled by user
+self.addEventListener('widgetuninstall', e => {
+  console.log('[SW] Widget uninstalled:', e.widget.definition.tag);
+  e.waitUntil((async () => {
+    if (e.widget.instances.length === 1 && 'periodicSync' in self.registration) {
+      await self.registration.periodicSync.unregister(e.widget.definition.tag);
+    }
+  })());
+});
+
+// Widget resumed after being suspended
+self.addEventListener('widgetresume', e => {
+  console.log('[SW] Widget resumed:', e.widget.definition.tag);
+  e.waitUntil(renderWidget(e.widget));
+});
+
+// Widget action clicked by user
+self.addEventListener('widgetclick', e => {
+  console.log('[SW] Widget clicked:', e.action);
+  switch (e.action) {
+    case 'open-app':
+      e.waitUntil(
+        self.clients.openWindow('/day-1-pemograman/index.html')
+      );
+      break;
+    default:
+      break;
+  }
 });
 
 /* ══════════════════════════════════════════════════
