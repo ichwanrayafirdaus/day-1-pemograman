@@ -191,6 +191,7 @@
   ],
   "scope_extensions": [
     {
+      "type": "origin",
       "origin": "https://ichwanrayafirdaus.github.io"
     }
   ],
@@ -203,6 +204,7 @@
       "short_name": "Keuangan",
       "description": "Lihat ringkasan pemasukan, pengeluaran, dan laba bersih usaha Anda.",
       "tag": "tokokita-summary",
+      "template": "widgets/template.json",
       "ms_ac_template": "widgets/template.json",
       "data": "widgets/data.json",
       "type": "application/json",
